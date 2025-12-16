@@ -18,7 +18,7 @@ site:
       uri: https://tshzhu.github.io
       external: true
   git:
-    base-url: https://github.com/michaelliao/gitsite/blob/main/source
+    base-url: https://github.com/tshzhu/magic/blob/main/source
   contact:
     name: Tansheng Zhu
     github: https://github.com/tshzhu/magic
