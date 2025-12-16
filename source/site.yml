@@ -12,17 +12,17 @@ site:
   # set cdn path:
   cdn-path: https://cdn.jsdelivr.net/npm
   navigation:
-    - title: License
+    - title: Blogs
       uri: /pages/license/index.html
-    - title: Discuss
-      uri: https://github.com/michaelliao/gitsite/discussions
+    - title: About me
+      uri: https://tshzhu.github.io
       external: true
   git:
     base-url: https://github.com/michaelliao/gitsite/blob/main/source
   contact:
     name: Tansheng Zhu
-    github: https://github.com/tshzhu
-    twitter: https://twitter.com/tanshengzhu
+    github: https://github.com/tshzhu/magic
+    twitter: https://twitter.com
   books:
     index-marker: true
   search:
@@ -33,7 +33,7 @@ site:
   # control styles:
   styles:
     # show 'Edit in Git':
-    display-git-link: false
+    display-git-link: true
     # any custom styles used in theme:
     # code-font: Monaco
   integration:
