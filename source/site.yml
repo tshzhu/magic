@@ -1,9 +1,9 @@
 site:
   # set the domain with schema but without trailing slash:
-  domain: 'https://gitsite.org'
-  title: GitSite
-  description: GitSite is a static web site generator for Git.
-  keywords: gitsite, git, static web site, html
+  domain: 'https://github.com/tshzhu/magic'
+  title: Magic
+  description: Notes for Machine Learning Theory
+  keywords: machine learning, deep learning, mathematics, theory
   theme: default
   language: en-US
   # set the /<rootPath> pathname under which your site is served
@@ -20,9 +20,9 @@ site:
   git:
     base-url: https://github.com/michaelliao/gitsite/blob/main/source
   contact:
-    name: Michael Liao
-    github: https://github.com/michaelliao/gitsite
-    twitter: https://twitter.com/liaoxuefeng
+    name: Tansheng Zhu
+    github: https://github.com/tshzhu
+    twitter: https://twitter.com/tanshengzhu
   books:
     index-marker: true
   search:
@@ -33,16 +33,16 @@ site:
   # control styles:
   styles:
     # show 'Edit in Git':
-    display-git-link: true
+    display-git-link: false
     # any custom styles used in theme:
     # code-font: Monaco
   integration:
-    comment:
-      provider: disqus
-      name: gitsite
-    analytics:
-      provider: google
-      gtag: G-5Z40K7NBL5
+    # comment:
+      # provider: disqus
+      # name: gitsite
+    # analytics:
+      # provider: google
+      # gtag: G-5Z40K7NBL5
 
 build:
   # copy special files under root dir (ignore if not found):
