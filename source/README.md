@@ -1,10 +1,10 @@
-# Redirecting...
+# Redirecting…
 
-<meta http-equiv="refresh" content="0;url=https://github.com/tshzhu/magic">
+<meta http-equiv="refresh" content="0;url=./books/math4ml/index.html">
 
 <div style="text-align:center">
-<svg xmlns="http://www.w3.org/2000/svg" style="display:block;margin:auto;width:100%;max-width:640px" viewBox="0 0 320 120" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" fill="currentColor"><path d="M0,142h8v2h-8v-2Zm28,0h4v2h-4v-2Zm68,0h8v2h-8v-2ZM80,100h-4v14h-4v6h-4v4h-4v16h4v4h-8v-12h-4v-4h-4v4h-4v4h-4v4h4v4h-8v-16h-4v-4h-4v-4h-4v-4h-4v-4h-4v-24h4v8h4v4h4v4h8v-4h4v-4h6v-4h6v-4h4v-26h4v-4h32v4h4v18h-20v4h12v4h-16v8h8v8h-4v-4Zm2,40h2v2h-2v-2Zm-70-4h8v2h-8v-2Zm98-2h6v2h-6v-2Zm-206-6h128v2h-128v-2Zm168,0h152v2h-152v-2ZM68,64v4h4v-4h-4Z" transform="translate(96-35)"/></svg>
-<p1>Redirecting to the project repo: <a href="https://github.com/tshzhu/magic">https://github.com/tshzhu/magic</a></p1>
+	<p>Redirecting to the Math4ML book…</p>
+	<p><a href="./books/math4ml/index.html">Go now</a></p>
 </div>
 
-<script>location.href = 'https://github.com/tshzhu/magic';</script>
+<script>location.href = './books/math4ml/index.html';</script>

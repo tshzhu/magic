@@ -1,7 +1,7 @@
 site:
   # set the domain with schema but without trailing slash:
   domain: 'https://github.com/tshzhu/magic'
-  title: Tansheng Zhu
+  title: Tansheng Zhu's Notes
   description: Notes for Machine Learning Theory
   keywords: machine learning, deep learning, mathematics, theory
   theme: default
