@@ -41,7 +41,6 @@ site:
 build:
   # copy special files under root dir (ignore if not found):
   copy:
-    - favicon.ico
     - robots.txt
     - ads.txt
 
