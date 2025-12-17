@@ -1,21 +1,10 @@
-# Home
+# Redirecting...
 
-# Rapidly build modern websites from Markdown documents in Git
+<meta http-equiv="refresh" content="0;url=https://github.com/tshzhu/magic">
 
----
+<div style="text-align:center">
+<svg xmlns="http://www.w3.org/2000/svg" style="display:block;margin:auto;width:100%;max-width:640px" viewBox="0 0 320 120" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" fill="currentColor"><path d="M0,142h8v2h-8v-2Zm28,0h4v2h-4v-2Zm68,0h8v2h-8v-2ZM80,100h-4v14h-4v6h-4v4h-4v16h4v4h-8v-12h-4v-4h-4v4h-4v4h-4v4h4v4h-8v-16h-4v-4h-4v-4h-4v-4h-4v-4h-4v-24h4v8h4v4h4v4h8v-4h4v-4h6v-4h6v-4h4v-26h4v-4h32v4h4v18h-20v4h12v4h-16v8h8v8h-4v-4Zm2,40h2v2h-2v-2Zm-70-4h8v2h-8v-2Zm98-2h6v2h-6v-2Zm-206-6h128v2h-128v-2Zm168,0h152v2h-152v-2ZM68,64v4h4v-4h-4Z" transform="translate(96-35)"/></svg>
+<p1>Redirecting to the project repo: <a href="https://github.com/tshzhu/magic">https://github.com/tshzhu/magic</a></p1>
+</div>
 
-### GitSite can build your well-organized Markdown documents with other resources to static web site deployed to GitHub pages, etc.
-
-
-Example:
-
-A GitHub Repo: [https://github.com/michaelliao/gitsite](https://github.com/michaelliao/gitsite) can be deployed to:
-
-- GitHub: [https://gitsite.org](https://gitsite.org)
-- GitLab: [https://gitlab.gitsite.org](https://gitlab.gitsite.org)
-- Cloudflare: [https://cloudflare.gitsite.org](https://cloudflare.gitsite.org)
-- Vercel: [https://vercel.gitsite.org](https://vercel.gitsite.org)
-
-### GitSite supports Markdown documents, embedded videos, mathematical expressions, ASCII art, QR code, diagrams, and even sheet music!
-
-# [Read User Guide »](/books/gitsite-guide/index.html)
+<script>location.href = 'https://github.com/tshzhu/magic';</script>

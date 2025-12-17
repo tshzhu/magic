@@ -1,7 +1,7 @@
 site:
   # set the domain with schema but without trailing slash:
   domain: 'https://github.com/tshzhu/magic'
-  title: Magic
+  title: Tansheng Zhu
   description: Notes for Machine Learning Theory
   keywords: machine learning, deep learning, mathematics, theory
   theme: default
@@ -11,18 +11,12 @@ site:
   root-path: /magic
   # set cdn path:
   cdn-path: https://cdn.jsdelivr.net/npm
-  navigation:
-    - title: Blogs
-      uri: /pages/license/index.html
-    - title: About me
-      uri: https://tshzhu.github.io
-      external: true
+  # navigation is unused (header removed); keep minimal config for books/blogs only
   git:
     base-url: https://github.com/tshzhu/magic/blob/main/source
   contact:
     name: Tansheng Zhu
-    github: https://github.com/tshzhu/magic
-    twitter: https://twitter.com
+    homepage: https://tshzhu.github.io
   books:
     index-marker: true
   search:

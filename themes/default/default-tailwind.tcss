@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-    --header-bar-height: 59px;
+    --header-bar-height: 0px;
     --footer-bar-height: 59px;
     --side-bar-width: 317px;
     --blog-info-width: 260px;
