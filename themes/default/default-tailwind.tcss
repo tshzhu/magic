@@ -5,8 +5,8 @@
 :root {
     --header-bar-height: 0px;
     --footer-bar-height: 59px;
-    --side-bar-width: 317px;
-    --blog-info-width: 260px;
+    --side-bar-width: 350px;
+    --blog-info-width: 350px;
 }
 
 html {
@@ -42,7 +42,7 @@ html {
 }
 
 .gsc-container {
-    @apply max-w-screen-2xl mx-auto px-4;
+    @apply max-w-[1500px] mx-auto px-4;
 }
 
 .gsc-backdrop {
@@ -68,7 +68,7 @@ html {
 }
 
 #gsi-sidebar {
-    @apply max-md:hidden md:w-[var(--side-bar-width)] fixed gsc-bg gsc-border py-4 pl-4 h-[calc(100vh-var(--header-bar-height))] top-[var(--header-bar-height)] left-[max(0rem,calc(50%-768px))] overflow-y-scroll border-r;
+    @apply max-md:hidden md:w-[var(--side-bar-width)] fixed gsc-bg gsc-border py-4 pl-4 h-[calc(100vh-var(--header-bar-height))] top-[var(--header-bar-height)] left-0 overflow-y-scroll border-r;
 }
 
 #gsi-content {

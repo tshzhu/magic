@@ -1,4 +1,4 @@
-# Signal Propagation and Parametrization
+# Parametrization
 
 
 ## Parametrization Matters in Neural Nets

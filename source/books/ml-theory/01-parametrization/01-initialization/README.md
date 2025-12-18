@@ -1,4 +1,4 @@
-# Maximal Update Parametrization
+# Signal Propagation
 
 
 ## abc-Parametrization

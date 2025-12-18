@@ -1,1 +1,0 @@
-# Spectrum Distribution in Infinite-Width Neural Networks
