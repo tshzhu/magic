@@ -5,8 +5,8 @@
 :root {
     --header-bar-height: 0px;
     --footer-bar-height: 59px;
-    --side-bar-width: 350px;
-    --blog-info-width: 350px;
+    --side-bar-width: 310px;
+    --blog-info-width: 310px;
 }
 
 html {
@@ -42,7 +42,7 @@ html {
 }
 
 .gsc-container {
-    @apply max-w-[1500px] mx-auto px-4;
+    @apply max-w-[1300px] mx-auto px-4;
 }
 
 .gsc-backdrop {
