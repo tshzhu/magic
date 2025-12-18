@@ -1,41 +1,5 @@
-# On the Signal Propagation of Infinitely Wide Neural Nets at Initialization
+# Maximal Update Parametrization
 
-
-## Parametrization Matters in Neural Nets
-
-![Convergence of a large 22-layer CNN (left) and a small 30-layer CNN (right) under Xavier and He initialization. (Source: Figure 2 and 3 in He et al., 2015)](figures/he2015_figure2_3.png)
-
-- Question: How to find the "optimal" (in what sense) parametrization
-- Approach: Control the signal propagation at initialization [^he2015delving]
-
-[^he2015delving]: He, Kaiming, Zhang, Xiangyu, Ren, Shaoqing, and Sun, Jian. "Delving deep into rectifiers: Surpassing human-level performance on imagenet classification." *Proceedings of the IEEE international conference on computer vision*. pp. 1026--1034, 2015.
-
-## Typical Size of Sum of iid Random Variables
-
-For iid $x_1, \dots, x_n$ sample from $x$, we have
-
-* Law of large numbers (LLN)
-
-    $$
-    \frac{1}{n} \sum_{i=1}^{n} x_i \xrightarrow{\textrm{a.s. / p}} \mathbb{E}[x]
-    $$
-
-* Central limit theorem (CLT)
-
-    $$
-    \frac{1}{\sqrt{n}} \sum_{i=1}^{n} (x_i - \mathbb{E}[x]) \xrightarrow{\textrm{d}} \mathcal{N}(0, \mathrm{Var}\left[x\right])
-    $$
-
-Hence, we have the following basic intuition regarding the size of a sum of $x_i$.
-
-When $n$ is large, $\sum_{i=1}^n x_i$ has typical size
-
-$$
-\begin{cases}
-    \Theta(n) & \text{if } \mathbb{E}[X] \neq 0 \\
-    \Theta(\sqrt{n}) & \text{otherwise, \text{w/ high prob}}
-\end{cases}
-$$
 
 ## abc-Parametrization
 
@@ -283,48 +247,50 @@ $$
 See the [mup package](https://github.com/microsoft/mup) for \muP and Hyperparameter Transfer (\muTransfer) in PyTorch
 
 ```python
-!pip install mup
-from mup import MuReadout, make_base_shapes, set_base_shapes, MuSGD, MuAdam
+    !pip install mup
+    from mup import MuReadout, make_base_shapes, set_base_shapes, MuSGD, MuAdam
 
-class MyModel(nn.Module):
-    def __init__(self, width, ...):
-        
-        ### In model definition, replace output layer with MuReadout
-        # readout = nn.Linear(width, d_out)
-        readout = MuReadout(width, d_out)
+    class MyModel(nn.Module):
+        def __init__(self, width, ...):
+            
+            ### In model definition, replace output layer with MuReadout
+            # readout = nn.Linear(width, d_out)
+            readout = MuReadout(width, d_out)
 
-    def forward(self, ...):
-        
-        ### If using a transformer, make sure to use
-        ###   1/d instead of 1/sqrt(d) attention scaling
-        # attention_scores = query @ key.T / d**0.5
-        attention_scores = query @ key.T * 8 / d
+        def forward(self, ...):
+            
+            ### If using a transformer, make sure to use
+            ###   1/d instead of 1/sqrt(d) attention scaling
+            # attention_scores = query @ key.T / d**0.5
+            attention_scores = query @ key.T * 8 / d
 
-### Instantiate a base model
-base_model = MyModel(width=1)
+    ### Instantiate a base model
+    base_model = MyModel(width=1)
 
-### Instantiate a "delta" model that differs from the base model
-###   in all dimensions ("widths") that one wishes to scale.
-delta_model = MyModel(width=2)
+    ### Instantiate a "delta" model that differs from the base model
+    ###   in all dimensions ("widths") that one wishes to scale.
+    delta_model = MyModel(width=2)
 
-### Instantiate the target model (the model you actually want to train).
-### This should be the same as the base model except 
-###   the widths could be potentially different.
-model = MyModel(width=100)
+    ### Instantiate the target model (the model you actually want to train).
+    ### This should be the same as the base model except 
+    ###   the widths could be potentially different.
+    model = MyModel(width=100)
 
-### Set base shapes
-set_base_shapes(model, base_model, delta=delta_model)
+    ### Set base shapes
+    set_base_shapes(model, base_model, delta=delta_model)
 
-### Replace your custom init, if any
-for param in model.parameters():
-    ### If initializing manually with fixed std or bounds,
-    ### then replace with same function from mup.init
-    # torch.nn.init.uniform_(param, -0.1, 0.1)
-    mup.init.uniform_(param, -0.1, 0.1)
+    ### Replace your custom init, if any
+    for param in model.parameters():
+        ### If initializing manually with fixed std or bounds,
+        ### then replace with same function from mup.init
+        # torch.nn.init.uniform_(param, -0.1, 0.1)
+        mup.init.uniform_(param, -0.1, 0.1)
 
-### Use the optimizers from `mup.optim` instead of `torch.optim`
-# optimizer = torch.optim.SGD(model.parameters(), lr=0.1)
-optimizer = MuSGD(model.parameters(), lr=0.1)
+    ### Use the optimizers from `mup.optim` instead of `torch.optim`
+    # optimizer = torch.optim.SGD(model.parameters(), lr=0.1)
+    optimizer = MuSGD(model.parameters(), lr=0.1)
+```
+
 $$
 \begin{aligned}
     extcolor{blue}{\partial_t \tilde{W}^l x^{l-1}(\xi)}
@@ -345,6 +311,8 @@ $$
 $$
     extcolor{magenta}{b_1 = 0, \quad b_{2:L} = \tfrac{1}{2}, \quad b_{L} = 1, \quad c_1 = -1, \quad c_{2:L} = 0, \quad c_{L+1} = 1}
 $$
+
+
 [^4]: Yang, Greg. "Tensor program I: Wide feedforward or recurrent neural networks of any architecture are Gaussian processes." *Advances in Neural Information Processing Systems*, vol. 32. 2019.
 
 [^5]: Jacot, Arthur, Gabriel, Franck, and Hongler, Clément. "Neural tangent kernel: Convergence and generalization in neural networks." *Advances in neural information processing systems*, vol. 31. 2018.
