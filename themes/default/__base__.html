@@ -118,6 +118,10 @@
             body.sidebar-collapsed .gsi-sidebar-toggle-icon-collapsed {
                 display: inline;
             }
+            /* fallback: force mobile header hidden on desktop even if responsive utilities are purged */
+            header.md\:hidden {
+                display: none !important;
+            }
         }
     </style>
 
