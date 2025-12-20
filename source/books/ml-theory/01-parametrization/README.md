@@ -1,7 +1,13 @@
-# Parametrization
+# Signal Propagation
 
 
-## Parametrization Matters in Neural Nets
+```alert type=tip title="TODO"
+- 整理clean的MUP推导
+- 后续再补充NTK细节
+```
+
+
+## Parametrization Matters in Neural **Nets**
 
 ![Convergence of a large 22-layer CNN (left) and a small 30-layer CNN (right) under Xavier and He initialization. (Source: Figure 2 and 3 in He et al., 2015)](figures/he2015_figure2_3.png)
 
@@ -14,15 +20,11 @@
 
 For iid $x_1, \dots, x_n$ sample from $x$, we have
 
-$$
-\boldsymbol{\Sigma} = \sum_{i=1}^n x_i x_i^{\transpose} \1_{x_i \in A}
-$$
-
-* Law of large numbers (LLN) $\eqref{eqn:lln}$, $\ref{eqn:lln}$
+* Law of large numbers (LLN)
 
 $$
 \begin{equation}
-    \frac{1}{n} \sum_{i=1}^{n} x_i \xrightarrow{\textrm{a.s. / p}} \mathbb{E}[x] \label{eqn:lln}
+    \frac{1}{n} \sum_{i=1}^{n} x_i \xrightarrow{\textrm{a.s. / p}} \mathbb{E}[x]
 \end{equation}
 $$
 

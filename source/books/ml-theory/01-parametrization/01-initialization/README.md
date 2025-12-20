@@ -1,4 +1,4 @@
-# Signal Propagation
+# Initialization Phase
 
 
 ## abc-Parametrization

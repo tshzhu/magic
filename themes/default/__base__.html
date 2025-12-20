@@ -47,6 +47,78 @@
         .pdf-only {
             display: none;
         }
+        /* desktop sidebar toggles: force transparent bg; inherit text color via utility classes */
+        #gsi-sidebar-toggle,
+        #gsi-sidebar-toggle-inline {
+            background: transparent !important;
+            border: none;
+            box-shadow: none;
+        }
+        #gsi-sidebar-toggle:hover,
+        #gsi-sidebar-toggle-inline:hover,
+        #gsi-sidebar-toggle:active,
+        #gsi-sidebar-toggle-inline:active,
+        #gsi-sidebar-toggle:focus,
+        #gsi-sidebar-toggle-inline:focus {
+            background: transparent !important;
+            outline: none;
+            box-shadow: none;
+        }
+        :root {
+            --gs-sidebar-width: var(--side-bar-width, 280px);
+        }
+        @media (max-width: 767px) {
+            #gsi-sidebar,
+            #gsi-sidebar-toggle,
+            #gsi-sidebar-toggle-inline {
+                display: none !important;
+            }
+            #gsi-content,
+            #gsi-footer {
+                margin-left: 0 !important;
+            }
+            /* hide sidebar tool icons inside offcanvas on mobile for a clean index */
+            #gsi-offcanvas-index #gsi-sidebar-tools {
+                display: none;
+            }
+        }
+        @media (min-width: 768px) {
+            #gsi-sidebar-toggle {
+                position: fixed;
+                top: 28px;
+                left: 12px;
+                z-index: 40;
+                display: none;
+            }
+            body.sidebar-collapsed #gsi-sidebar {
+                display: none;
+            }
+            body.sidebar-collapsed #gsi-content,
+            body.sidebar-collapsed #gsi-footer {
+                margin-left: 0 !important;
+            }
+            body.sidebar-collapsed #gsi-body .gsc-container {
+                max-width: 1040px;
+                padding-left: 24px;
+                padding-right: 24px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            body.sidebar-collapsed #gsi-sidebar-toggle {
+                display: flex;
+                left: 0;
+                top: 0;
+            }
+            body.sidebar-collapsed #gsi-sidebar-toggle-inline {
+                display: none !important;
+            }
+            body.sidebar-collapsed .gsi-sidebar-toggle-icon-expanded {
+                display: none;
+            }
+            body.sidebar-collapsed .gsi-sidebar-toggle-icon-collapsed {
+                display: inline;
+            }
+        }
     </style>
 
     {% if __mode__ == 'build' %}
@@ -344,6 +416,33 @@
             window.addEventListener('orientationchange', resizeNavigationMenu);
             resizeNavigationMenu();
         });
+
+        documentReady(() => {
+            const sidebar = document.getElementById('gsi-sidebar');
+            const toggle = document.getElementById('gsi-sidebar-toggle');
+            const inlineToggle = document.getElementById('gsi-sidebar-toggle-inline');
+            if (!sidebar || !toggle) {
+                return;
+            }
+            const setIcons = (collapsed) => {
+                const expandedIcons = document.querySelectorAll('.gsi-sidebar-toggle-icon-expanded');
+                const collapsedIcons = document.querySelectorAll('.gsi-sidebar-toggle-icon-collapsed');
+                expandedIcons.forEach(el => el.classList.toggle('hidden', collapsed));
+                collapsedIcons.forEach(el => el.classList.toggle('hidden', !collapsed));
+            };
+            const applyState = (collapsed) => {
+                document.body.classList.toggle('sidebar-collapsed', collapsed);
+                toggle.setAttribute('aria-pressed', collapsed ? 'true' : 'false');
+                inlineToggle && inlineToggle.setAttribute('aria-pressed', collapsed ? 'true' : 'false');
+                setIcons(collapsed);
+            };
+            const handler = () => {
+                const collapsed = !document.body.classList.contains('sidebar-collapsed');
+                applyState(collapsed);
+            };
+            toggle.addEventListener('click', handler);
+            inlineToggle && inlineToggle.addEventListener('click', handler);
+        });
     </script>
     <script src="{{ site.cdnPath }}/abcjs@6.2.0/dist/abcjs-basic-min.js"></script>
     <script src="{{ site.rootPath }}/static/abcjs-init.js"></script>
@@ -353,8 +452,59 @@
 </head>
 
 <body class="gsc-text gsc-bg">
-    
-    <div id="gsi-body" class="w-full">
+
+    <!-- mobile header with tools and menu toggle -->
+    <header class="md:hidden fixed top-0 left-0 right-0 z-30 bg-white/90 dark:bg-slate-900/90 backdrop-blur border-b border-slate-200 dark:border-slate-800">
+        <div class="gsc-container flex items-center justify-between h-14 px-3">
+            <div class="flex items-center space-x-3">
+                <a class="gsc-popup-menu inline-block py-4" href="#0" onclick="gitsite.showOffcanvas();return false;" aria-label="Toggle index">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="inline-block w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 6h15M4.5 12h15m-15 6h15" />
+                    </svg>
+                </a>
+                <span class="text-base font-semibold truncate">{{ site.title }}</span>
+            </div>
+            <div class="flex items-center space-x-2">
+                <a class="p-2 rounded hover:bg-slate-100 dark:hover:bg-slate-800" href="#0" onclick="gitsite.showSearch();return false;" title="Search">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                    </svg>
+                </a>
+                <a class="p-2 rounded hover:bg-slate-100 dark:hover:bg-slate-800 gsc-hidden-on-dark" href="#0" onclick="gitsite.setDarkMode(true);return false;" title="Switch to dark mode">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
+                    </svg>
+                </a>
+                <a class="p-2 rounded hover:bg-slate-100 dark:hover:bg-slate-800 gsc-hidden-on-light" href="#0" onclick="gitsite.setDarkMode(false);return false;" title="Switch to light mode">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
+                    </svg>
+                </a>
+                <a class="p-2 rounded hover:bg-slate-100 dark:hover:bg-slate-800" href="{{ site.contact.homepage }}" target="_blank" rel="noopener noreferrer" title="Homepage">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955a1 1 0 011.591 0L21.75 12" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <button id="gsi-sidebar-toggle" type="button" aria-label="Toggle sidebar" aria-pressed="false"
+        class="hidden md:flex items-center justify-center h-9 w-9 rounded-full text-blue-600 dark:text-blue-300 bg-transparent hover:bg-transparent active:bg-transparent focus:bg-transparent focus:outline-none focus:ring-0 appearance-none">
+        <span class="gsi-sidebar-toggle-icon-expanded">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="inline-block w-5 h-5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 6h15M4.5 12h15m-15 6h15" />
+            </svg>
+        </span>
+        <span class="gsi-sidebar-toggle-icon-collapsed hidden">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="inline-block w-5 h-5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 6h15M4.5 12h15m-11 6h11" />
+            </svg>
+        </span>
+    </button>
+
+    <div id="gsi-body" class="w-full pt-16 md:pt-0">
         <div class="gsc-container">
             {% block main %}
             <p>main</p>
