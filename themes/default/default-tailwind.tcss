@@ -30,11 +30,11 @@ html {
 }
 
 .gsc-bg {
-    @apply bg-gray-50 dark:bg-gray-900;
+    @apply bg-white dark:bg-gray-900;
 }
 
 .gsc-fill {
-    @apply fill-gray-50 dark:fill-gray-900;
+    @apply fill-white dark:fill-gray-900;
 }
 
 .gsc-border {
