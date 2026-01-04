@@ -4,7 +4,7 @@
 
 <div style="text-align:center">
 	<p>Redirecting to the default book…</p>
-	<p><a href="./books/ml-theory/index.html">Go now</a></p>
+	<p><a href="./books/optimization/index.html">Go now</a></p>
 </div>
 
-<script>location.href = './books/ml-theory/index.html';</script>
+<script>location.href = './books/optimization/index.html';</script>
