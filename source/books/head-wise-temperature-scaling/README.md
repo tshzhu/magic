@@ -13,9 +13,25 @@
 }
 .proof {
   border-left: 3px solid #aaa;
-  padding: 0.5rem 1rem;
+  padding: 0.75rem 1rem;
   margin: 1rem 0;
   background: #fafafa;
+}
+.figure {
+  margin: 1rem 0;
+  text-align: center;
+}
+.figure img {
+  max-width: 100%;
+  height: auto;
+  display: inline-block;
+}
+.caption {
+  margin-top: -0.35rem;
+  margin-bottom: 1.25rem;
+  text-align: center;
+  color: #555;
+  font-size: 0.95rem;
 }
 .figure-grid {
   display: grid;
@@ -59,4 +75,3 @@ This folder is a GitSite book converted from the original LaTeX report. Each sec
 - [Head-Aware Temperature Scaling](30-head-aware-temperature-scaling/)
 - [Conclusions](40-conclusions/)
 - [Proofs](50-proofs/)
-- [References](60-references/)

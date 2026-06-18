@@ -13,9 +13,25 @@
 }
 .proof {
   border-left: 3px solid #aaa;
-  padding: 0.5rem 1rem;
+  padding: 0.75rem 1rem;
   margin: 1rem 0;
   background: #fafafa;
+}
+.figure {
+  margin: 1rem 0;
+  text-align: center;
+}
+.figure img {
+  max-width: 100%;
+  height: auto;
+  display: inline-block;
+}
+.caption {
+  margin-top: -0.35rem;
+  margin-bottom: 1.25rem;
+  text-align: center;
+  color: #555;
+  font-size: 0.95rem;
 }
 .figure-grid {
   display: grid;
@@ -48,13 +64,14 @@ th, td {
 
 <div class="definition" id="">
 
-**Definition (Generalized effective sample size [Huggins and Roy, 2019; Martino et al., 2017]).** For normalized weights $\boldsymbol{w} = (w_1, \dots, w_n)$ with $w_i \ge 0$ and $\sum_{i=1}^n w_i = 1$, the generalized effective sample size (ESS) of positive order $\beta \in (0, 1) \cup (1, \infty)$ (Note: $\mathcal{E}_{\beta}$ with $\beta \in \left\{0, \infty\right\}$ are defined via limits [Van Erven and Harremoes, 2014], as for $\beta = 1$, but we do not discuss these two cases in detail in this report.) is defined as
+**Definition (Generalized effective sample size [Huggins and Roy, 2019; Martino et al., 2017][^huggins2019approximate][^martino2017effective]).** For normalized weights $\boldsymbol{w} = (w_1, \dots, w_n)$ with $w_i \ge 0$ and $\sum_{i=1}^n w_i = 1$, the generalized effective sample size (ESS) of positive order $\beta \in (0, 1) \cup (1, \infty)$ (Note: $\mathcal{E}_{\beta}$ with $\beta \in \left\{0, \infty\right\}$ are defined via limits [Van Erven and Harremoes, 2014][^van2014renyi], as for $\beta = 1$, but we do not discuss these two cases in detail in this report.) is defined as
 
 
 ```math align=center
 \mathcal{E}_{\beta}(\boldsymbol{w}) = \left( \sum_{i=1}^{n} w_i^{\beta} \right)^{\frac{1}{1 - \beta}}.
 ```
-For $\beta = 2$, this coincides with the classical ESS estimator used in importance sampling [Kong, 1992; Kong et al., 1994]. As $\beta$ tends to $1$, the generalized ESS tends to the perplexity [Cappe et al., 2008]:
+
+For $\beta = 2$, this coincides with the classical ESS estimator used in importance sampling [Kong, 1992; Kong et al., 1994][^kong1992note][^kong1994sequential]. As $\beta$ tends to $1$, the generalized ESS tends to the perplexity [Cappe et al., 2008][^cappe2008adaptive]:
 
 
 ```math align=center
@@ -66,23 +83,25 @@ For $\beta = 2$, this coincides with the classical ESS estimator used in importa
 
 <div class="definition" id="">
 
-**Definition (Rényi divergence and Rényi entropy [Rényi, 1961]).** For a positive order $\beta \neq 1$, the Rényi divergence of a discrete probability distribution $\boldsymbol{p} = (p_1, \dots, p_n)$ from $\boldsymbol{q} = (q_1, \dots, q_n)$ is defined as
+**Definition (Rényi divergence and Rényi entropy [Rényi, 1961][^renyi1961measures]).** For a positive order $\beta \neq 1$, the Rényi divergence of a discrete probability distribution $\boldsymbol{p} = (p_1, \dots, p_n)$ from $\boldsymbol{q} = (q_1, \dots, q_n)$ is defined as
 
 
 ```math align=center
 D_{\beta}(\boldsymbol{p} \parallel \boldsymbol{q})
         = \frac{1}{\beta - 1} \ln\left( \sum_{i=1}^{n} p_i^{\beta} q_i^{1 - \beta} \right).
 ```
+
 The Rényi entropy is defined as
 
 
 ```math align=center
 H_{\beta}(\boldsymbol{w}) = \frac{1}{1 - \beta} \ln\left( \sum_{i=1}^{n} w_i^{\beta} \right) = \ln\left( \mathcal{E}_{\beta}(\boldsymbol{w}) \right).
 ```
+
 As $\beta$ tends to $1$, the Rényi divergence converges to the Kullback–Leibler (KL) divergence, and the Rényi entropy converges to the Shannon entropy.
 
 </div>
-Here we state, without proof, several facts concerning the generalized ESS and the Rényi divergence [Huggins and Roy, 2019; Van Erven and Harremoes, 2014; Martino et al., 2017]:
+Here we state, without proof, several facts concerning the generalized ESS and the Rényi divergence [Huggins and Roy, 2019; Van Erven and Harremoes, 2014; Martino et al., 2017][^huggins2019approximate][^van2014renyi][^martino2017effective]:
 
 
 <div class="definition" id="">
@@ -114,6 +133,7 @@ Here we state, without proof, several facts concerning the generalized ESS and t
         = \exp\left( \ln n - D_{\beta}(\boldsymbol{w} \parallel \boldsymbol{u}) \right)
         = n \exp\left(- D_{\beta}(\boldsymbol{w} \parallel \boldsymbol{u}) \right)
 ```
+
 where $\boldsymbol{u} = (1/n, \dots, 1/n)$ is the uniform distribution.
 
 </div>
@@ -131,6 +151,7 @@ In this report, we use the generalized ESS to quantify the effective sequence le
         = \frac{\left( \sum_{i=1}^{L} e^{\lambda s_i} \right)^{\frac{\beta}{\beta - 1}}}{\left( \sum_{i=1}^{L} e^{\beta \lambda s_i} \right)^{\frac{1}{\beta - 1}}}
         = \frac{Z(\boldsymbol{s}; \lambda)^{\frac{\beta}{\beta - 1}}}{Z(\boldsymbol{s}; \beta \lambda)^{\frac{1}{\beta - 1}}}.
 ```
+
 Define $\mathcal{E}_1(\boldsymbol{\alpha}) \coloneqq \lim_{\beta \to 1} \mathcal{E}_{\beta}(\boldsymbol{\alpha})$.
 
 </div>
@@ -150,6 +171,7 @@ Let $\mathcal{E}_{\beta, n}$ and $\mathcal{E}_{\beta, n+m}$ denote the effective
 ```math align=center
 \Delta_{\beta} \coloneqq \frac{\mathcal{E}_{\beta, n+m}}{\mathcal{E}_{\beta, n}} - 1.
 ```
+
 The following Theorem 1 shows that $\Delta_{\beta}$ provides a metric that bounds the difference $\| \boldsymbol{o}_{n+m} - \boldsymbol{o}_{n} \|$. Therefore, if $\mathcal{E}_{\beta}$ remains approximately constant across context lengths for some $\beta$, the behavior of single-layer attention under length generalization is approximately stable.
 
 <div class="theorem" id="thm:ess retrieval">
@@ -160,30 +182,36 @@ The following Theorem 1 shows that $\Delta_{\beta}$ provides a metric that bound
 1. If $\beta > 1$,
   
   
-  $$
-  \| \boldsymbol{o}_{n+m} - \boldsymbol{o}_n \| \le C_{\beta} \Delta_{\beta}.
-  $$
+
+```math align=center
+\| \boldsymbol{o}_{n+m} - \boldsymbol{o}_n \| \le C_{\beta} \Delta_{\beta}.
+```
+
 2. If $\beta = 1$,
   
   
-  $$
-  \| \boldsymbol{o}_{n+m} - \boldsymbol{o}_n \| \le \frac{ C_{\beta} \Delta_{\beta}}{\ln(1/\Delta_{\beta})}.
-  $$
+
+```math align=center
+\| \boldsymbol{o}_{n+m} - \boldsymbol{o}_n \| \le \frac{ C_{\beta} \Delta_{\beta}}{\ln(1/\Delta_{\beta})}.
+```
+
 3. If $0 < \beta < 1$,
   
   
-  $$
-  \| \boldsymbol{o}_{n+m} - \boldsymbol{o}_n \| \le C_{\beta} \Delta_{\beta}^{\frac{1}{\beta}}.
-  $$
+
+```math align=center
+\| \boldsymbol{o}_{n+m} - \boldsymbol{o}_n \| \le C_{\beta} \Delta_{\beta}^{\frac{1}{\beta}}.
+```
 
 </div>
 
-<details class="proof" open>
-<summary><strong>Proof.</strong></summary>
+<div class="proof">
+
+**Proof.**
 
 We defer the proof to Proofs of Theorem 1 and Corollary 1.
 
-</details>
+</div>
 Although the assumption $\Delta_{\beta} > 0$ may seem abstract, it is naturally satisfied in typical retrieval tasks where a small number of signal logits dominate. In this setting, $\mathcal{E}_{\beta, n} (= O(1)) \le \tilde{\mathcal{E}}_{\beta, m} (= \Theta(m))$, where $\tilde{\mathcal{E}}_{\beta, m}$ denotes the effective sequence length of the additional noise logits $(s_{n+1}, \dots, s_{n+m})$. We formalize this in Corollary 1.
 
 <div class="theorem" id="cor:ess retrieval dominant">
@@ -192,12 +220,13 @@ Although the assumption $\Delta_{\beta} > 0$ may seem abstract, it is naturally 
 
 </div>
 
-<details class="proof" open>
-<summary><strong>Proof.</strong></summary>
+<div class="proof">
+
+**Proof.**
 
 We defer the proof to Proofs of Theorem 1 and Corollary 1.
 
-</details>
+</div>
 
 <div id="sec:aggregation"></div>
 ## Global Aggregation Heads
@@ -212,6 +241,7 @@ An aggregation head is an attention head that extracts global statistics or aggr
     = \sum_{i=1}^{n} \boldsymbol{v}_i \hat{\pi}_{n, i}
     \approx \int_{0}^{1} \boldsymbol{v}_{\left\lceil n x \right\rceil} p(x) \mathop{}\!\mathrm{d} x,
 ```
+
 where $\hat{\pi}_{n, i} = p(i / n) / \sum_{j=1}^{n} p(j / n)$ are the weights of the discrete distribution induced by $p$. For each $n$, our goal is to approximate $\boldsymbol{o}_n^*$ using the single-layer attention output at the last token, $\boldsymbol{o}_n$. Equivalently, the attention weights should approximate the target weight vector $(\hat{\pi}_{n, 1}, \dots, \hat{\pi}_{n, n})$.
 
 The following Theorem 2 shows that, to approximate global aggregation tasks within an $\varepsilon$ tolerance, $\mathcal{E}_{\beta}(\boldsymbol{\alpha})$ must grow linearly with the sequence length.
@@ -227,15 +257,16 @@ C e^{-\varepsilon} n \le \mathcal{E}_{\beta}(\boldsymbol{\alpha}) \le n.
 
 </div>
 
-<details class="proof" open>
-<summary><strong>Proof.</strong></summary>
+<div class="proof">
+
+**Proof.**
 
 We defer the proof to Proof of Theorem 2.
 
-</details>
+</div>
 
 ## Visualizing the Effective Sequence Length
-We evaluate a pretrained GPT-2 Small model using a local nanoGPT backend [Karpathy, 2022]. We extract causal attention weights from the model’s $c_{\mathrm{attn}}$ projections and compute position-wise $\mathcal{E}_{\beta}$ for each layer and head. We consider three prompt types:
+We evaluate a pretrained GPT-2 Small model using a local nanoGPT backend [Karpathy, 2022][^karpathy2022nanogpt]. We extract causal attention weights from the model’s $c_{\mathrm{attn}}$ projections and compute position-wise $\mathcal{E}_{\beta}$ for each layer and head. We consider three prompt types:
 
 
 - **Retrieval text**: person–city fact lookup; the final token queries a stored fact.
@@ -294,47 +325,39 @@ We plot position-wise ESS curves at $\beta = 2$ for synthetic retrieval and aggr
   <img src="gpt2_ess__gpt2_aggregation_beta=2.0_heatmap.png" alt="Final-position ESS heatmaps at $\beta = 2$: retrieval (left), aggregation (right).">
 </div>
 
-**Figure 1.** Final-position ESS heatmaps at $\beta = 2$: retrieval (left), aggregation (right).
+<p class="caption"><strong>Figure 1.</strong> Final-position ESS heatmaps at $\beta = 2$: retrieval (left), aggregation (right).</p>
 
 <div id="fig:gpt2_retrieval_beta=2.0_ess_curve"></div>
-![Retrieval text, $\beta = 2$: position-wise ESS curves.](gpt2_ess__gpt2_retrieval_beta=2.0_ess_curve.png)
-
-**Figure 2.** Retrieval text, $\beta = 2$: position-wise ESS curves.
+<p class="figure"><img src="gpt2_ess__gpt2_retrieval_beta=2.0_ess_curve.png" alt="Retrieval text, $\beta = 2$: position-wise ESS curves."></p>
+<p class="caption"><strong>Figure 2.</strong> Retrieval text, $\beta = 2$: position-wise ESS curves.</p>
 
 <div id="fig:gpt2_aggregation_beta=2.0_ess_curve"></div>
-![Aggregation text, $\beta = 2$: position-wise ESS curves.](gpt2_ess__gpt2_aggregation_beta=2.0_ess_curve.png)
-
-**Figure 3.** Aggregation text, $\beta = 2$: position-wise ESS curves.
-
+<p class="figure"><img src="gpt2_ess__gpt2_aggregation_beta=2.0_ess_curve.png" alt="Aggregation text, $\beta = 2$: position-wise ESS curves."></p>
+<p class="caption"><strong>Figure 3.</strong> Aggregation text, $\beta = 2$: position-wise ESS curves.</p>
 
 ### Natural Text, Varying $\beta$.
 Because natural text is non-synthetic, it better reflects the ESS distribution of LLMs under realistic inputs than the other two settings. We fix the prompt and vary $\beta \in \left\{0, 0.5, 1, 2, \infty\right\}$ to study ESS behavior. As shown in Figure 4, Figure 5, Figure 6, Figure 7, Figure 8, Figure 9, the ESS curves decrease monotonically with increasing $\beta$, consistent with the monotonicity of $\mathcal{E}_{\beta}$. These results indicate that ESS is an informative metric for characterizing attention weights.
 
 
 <div id="fig:gpt2_natural_beta=0.0_ess_curve"></div>
-![Natural text, $\beta=0$: position-wise ESS curves.](gpt2_ess__gpt2_natural_beta=0.0_ess_curve.png)
-
-**Figure 4.** Natural text, $\beta=0$: position-wise ESS curves.
+<p class="figure"><img src="gpt2_ess__gpt2_natural_beta=0.0_ess_curve.png" alt="Natural text, $\beta=0$: position-wise ESS curves."></p>
+<p class="caption"><strong>Figure 4.</strong> Natural text, $\beta=0$: position-wise ESS curves.</p>
 
 <div id="fig:gpt2_natural_beta=0.5_ess_curve"></div>
-![Natural text, $\beta=0.5$: position-wise ESS curves.](gpt2_ess__gpt2_natural_beta=0.5_ess_curve.png)
-
-**Figure 5.** Natural text, $\beta=0.5$: position-wise ESS curves.
+<p class="figure"><img src="gpt2_ess__gpt2_natural_beta=0.5_ess_curve.png" alt="Natural text, $\beta=0.5$: position-wise ESS curves."></p>
+<p class="caption"><strong>Figure 5.</strong> Natural text, $\beta=0.5$: position-wise ESS curves.</p>
 
 <div id="fig:gpt2_natural_beta=1.0_ess_curve"></div>
-![Natural text, $\beta=1$: position-wise ESS curves.](gpt2_ess__gpt2_natural_beta=1.0_ess_curve.png)
-
-**Figure 6.** Natural text, $\beta=1$: position-wise ESS curves.
+<p class="figure"><img src="gpt2_ess__gpt2_natural_beta=1.0_ess_curve.png" alt="Natural text, $\beta=1$: position-wise ESS curves."></p>
+<p class="caption"><strong>Figure 6.</strong> Natural text, $\beta=1$: position-wise ESS curves.</p>
 
 <div id="fig:gpt2_natural_beta=2.0_ess_curve"></div>
-![Natural text, $\beta=2$: position-wise ESS curves.](gpt2_ess__gpt2_natural_beta=2.0_ess_curve.png)
-
-**Figure 7.** Natural text, $\beta=2$: position-wise ESS curves.
+<p class="figure"><img src="gpt2_ess__gpt2_natural_beta=2.0_ess_curve.png" alt="Natural text, $\beta=2$: position-wise ESS curves."></p>
+<p class="caption"><strong>Figure 7.</strong> Natural text, $\beta=2$: position-wise ESS curves.</p>
 
 <div id="fig:gpt2_natural_beta=inf_ess_curve"></div>
-![Natural text, $\beta=\infty$: position-wise ESS curves.](gpt2_ess__gpt2_natural_beta=inf_ess_curve.png)
-
-**Figure 8.** Natural text, $\beta=\infty$: position-wise ESS curves.
+<p class="figure"><img src="gpt2_ess__gpt2_natural_beta=inf_ess_curve.png" alt="Natural text, $\beta=\infty$: position-wise ESS curves."></p>
+<p class="caption"><strong>Figure 8.</strong> Natural text, $\beta=\infty$: position-wise ESS curves.</p>
 
 <div id="fig:gpt2_natural_heatmap"></div>
 <div class="figure-grid">
@@ -345,4 +368,22 @@ Because natural text is non-synthetic, it better reflects the ESS distribution o
   <img src="gpt2_ess__gpt2_natural_beta=inf_heatmap.png" alt="Natural final-position heatmaps at $\beta \in \left\{0, 0.5, 1, 2, \infty\right\}$.">
 </div>
 
-**Figure 9.** Natural final-position heatmaps at $\beta \in \left\{0, 0.5, 1, 2, \infty\right\}$.
+<p class="caption"><strong>Figure 9.</strong> Natural final-position heatmaps at $\beta \in \left\{0, 0.5, 1, 2, \infty\right\}$.</p>
+
+
+
+[^huggins2019approximate]: Huggins, Jonathan H. and Roy, Daniel M.. (2019). *Sequential Monte Carlo as Approximate Sampling: bounds, adaptive resampling via $\infty$-ESS, and an application to Particle Gibbs*. Bernoulli. 25, (1), 584--622.
+
+[^martino2017effective]: Martino, Luca and Elvira, Víctor and Louzada, Francisco. (2017). *Effective sample size for importance sampling based on discrepancy measures*. Signal Processing. 131, 386--401.
+
+[^van2014renyi]: Van Erven, Tim and Harremoes, Peter. (2014). *Rényi divergence and Kullback-Leibler divergence*. IEEE Transactions on Information Theory. 60, (7), 3797--3820.
+
+[^kong1992note]: Kong, Augustine. (1992). *A note on importance sampling using standardized weights*. University of Chicago, Department of Statistics. (348), 14. https://d3qi0qp55mx5f5.cloudfront.net/stat/docs/tech-rpts/tr348.pdf.
+
+[^kong1994sequential]: Kong, Augustine and Liu, Jun S. and Wong, Wing Hung. (1994). *Sequential imputations and Bayesian missing data problems*. Journal of the American Statistical Association. 89, (425), 278--288.
+
+[^cappe2008adaptive]: Cappe, Olivier and Douc, Randal and Guillin, Arnaud and Marin, Jean-Michel and Robert, Christian P. (2008). *Adaptive importance sampling in general mixture classes*. Statistics and Computing. 18, (4), 447--459.
+
+[^renyi1961measures]: Rényi, Alfred. (1961). *On measures of entropy and information*. Proceedings of the fourth Berkeley symposium on mathematical statistics and probability, volume 1: contributions to the theory of statistics. 4, 547--562.
+
+[^karpathy2022nanogpt]: Andrej Karpathy. (2022). *nanoGPT*. GitHub. https://github.com/karpathy/nanoGPT.

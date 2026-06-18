@@ -13,9 +13,25 @@
 }
 .proof {
   border-left: 3px solid #aaa;
-  padding: 0.5rem 1rem;
+  padding: 0.75rem 1rem;
   margin: 1rem 0;
   background: #fafafa;
+}
+.figure {
+  margin: 1rem 0;
+  text-align: center;
+}
+.figure img {
+  max-width: 100%;
+  height: auto;
+  display: inline-block;
+}
+.caption {
+  margin-top: -0.35rem;
+  margin-bottom: 1.25rem;
+  text-align: center;
+  color: #555;
+  font-size: 0.95rem;
 }
 .figure-grid {
   display: grid;
@@ -64,18 +80,21 @@ Now we briefly review the essential details of multi-head attention and rotary p
     \  \boldsymbol{K}^{(h)} = \boldsymbol{X} \boldsymbol{W}_K^{(h)}, 
     \  \boldsymbol{V}^{(h)} = \boldsymbol{X} \boldsymbol{W}_V^{(h)}.
 ```
+
 The attention output of head $h$, denoted by $\boldsymbol{O}^{(h)} \in \mathbb{R}^{L \times d}$, is defined as
 
 
 ```math align=center
 \boldsymbol{O}^{(h)} = \operatorname{Softmax} \left(\frac{1}{\sqrt{d}} \boldsymbol{Q}^{(h)} (\boldsymbol{K}^{(h)})^{\mathsf{T}} + \boldsymbol{M}\right) \boldsymbol{V}^{(h)},
 ```
+
 where $\boldsymbol{M} \in \mathbb{R}^{L \times L}$ is the causal mask matrix. Let $\boldsymbol{q}_i^{(h)}, \boldsymbol{k}_i^{(h)}, \boldsymbol{v}_i^{(h)} \in \mathbb{R}^{d}$ denote the $i$-th rows of $\boldsymbol{Q}^{(h)}, \boldsymbol{K}^{(h)}$, and $\boldsymbol{V}^{(h)}$, respectively. For token $t \in \left\{1, \dots, L\right\}$, the output vector $\boldsymbol{o}^{(h)}_t \in \mathbb{R}^{d}$ is
 
 
 ```math align=center
 \boldsymbol{o}^{(h)}_t = \sum_{i=1}^{t} \frac{\exp\left( (\boldsymbol{q}_t^{(h)})^{\mathsf{T}} \boldsymbol{k}^{(h)}_i / \sqrt{d} \right)}{\sum_{j=1}^{t} \exp\left( (\boldsymbol{q}^{(h)}_t)^{\mathsf{T}} \boldsymbol{k}^{(h)}_j / \sqrt{d} \right)} \boldsymbol{v}^{(h)}_i.
 ```
+
 We denote the attention logit between query $\boldsymbol{q}^{(h)}_i$ and key $\boldsymbol{k}^{(h)}_j$ by $s^{(h)}_{i, j} = \frac{1}{\sqrt{d}} (\boldsymbol{q}^{(h)}_i)^{\mathsf{T}} \boldsymbol{k}^{(h)}_j$, and define $\alpha^{(h)}_{t, i} = \operatorname{Softmax}_i ( s^{(h)}_{t, 1}, \dots, s^{(h)}_{t, t} )$ as the attention weight of token $t$ attending to token $i$. Thus, $\boldsymbol{o}^{(h)}_t = \sum_{i=1}^{t} \alpha^{(h)}_{t, i} \boldsymbol{v}^{(h)}_i$.
 
 Finally, the head outputs are concatenated along the feature dimension and linearly projected to produce the multi-head output $\boldsymbol{O} \in \mathbb{R}^{L \times D}$, which is
@@ -84,6 +103,7 @@ Finally, the head outputs are concatenated along the feature dimension and linea
 ```math align=center
 \boldsymbol{O} = \left[ \boldsymbol{O}^{(1)}, \boldsymbol{O}^{(2)}, \dots, \boldsymbol{O}^{(H)} \right] \boldsymbol{W}_O,
 ```
+
 where $\boldsymbol{W}_O \in \mathbb{R}^{D \times D}$ is the output projection matrix.
 
 
@@ -100,7 +120,8 @@ where $\boldsymbol{W}_O \in \mathbb{R}^{D \times D}$ is the output projection ma
         \end{pmatrix}.
     \end{aligned}
 ```
-Since $( \boldsymbol{G}_m )^{\mathsf{T}} = \boldsymbol{G}_{-m}$ and $\boldsymbol{G}_m \boldsymbol{G}_n = \boldsymbol{G}_{m+n}$, it follows that $\boldsymbol{R}_m = (\boldsymbol{R}_1)^m$. For the $i$-th token, we apply the rotation matrix $\boldsymbol{R}_{i-1}$ to its query and key vectors. (Note: Because token indices in our theoretical analysis start at $1$, the rotation step is shifted by $-1$, so the first token receives the identity matrix $\boldsymbol{R}_0 = \boldsymbol{I}_d$ [Su et al., 2021].) The attention logit is then
+
+Since $( \boldsymbol{G}_m )^{\mathsf{T}} = \boldsymbol{G}_{-m}$ and $\boldsymbol{G}_m \boldsymbol{G}_n = \boldsymbol{G}_{m+n}$, it follows that $\boldsymbol{R}_m = (\boldsymbol{R}_1)^m$. For the $i$-th token, we apply the rotation matrix $\boldsymbol{R}_{i-1}$ to its query and key vectors. (Note: Because token indices in our theoretical analysis start at $1$, the rotation step is shifted by $-1$, so the first token receives the identity matrix $\boldsymbol{R}_0 = \boldsymbol{I}_d$ [Su et al., 2021][^su2021roformer].) The attention logit is then
 
 
 ```math align=center
@@ -118,6 +139,7 @@ Since $( \boldsymbol{G}_m )^{\mathsf{T}} = \boldsymbol{G}_{-m}$ and $\boldsymbol
         \end{pmatrix}.
     \end{aligned}
 ```
+
 Here, $q_{i, \bullet}, k_{j, \bullet} \in \mathbb{R}$ denote the $\bullet$-th coordinates of $\boldsymbol{q}_i$ and $\boldsymbol{k}_j$, respectively. For convenience, we write $\boldsymbol{R} \coloneqq \boldsymbol{R}_1$ and $\boldsymbol{G} \coloneqq \boldsymbol{G}_1$. If $\theta_f \equiv 0$ for all $f \in \left\{0, \dots, d/2 - 1\right\}$, then $\boldsymbol{R}$ reduces to the identity matrix, corresponding to No Positional Encoding (NoPE).
 
 
@@ -130,21 +152,36 @@ Let $\lambda > 0$ denote the *scaling factor* (or *inverse temperature*). When $
     = \operatorname{Softmax}_i \left( \lambda s_{t, 1}, \dots, \lambda s_{t, t} \right)
     = \frac{e^{\lambda s_{t, i}}}{\sum_{j=1}^{t} e^{\lambda s_{t,j}}}.
 ```
+
 If $\lambda$ is fixed, the distribution of attention weights $(\alpha_{L, 1}, \dots, \alpha_{L, L})$ tends to flatten as the sequence length $L$ increases, causing the attention mechanism to lose selectivity. Therefore, an important problem is to choose an appropriate scaling factor $\lambda = \lambda(L)$.
 
-As summarized in Table 1, many practical implementations are used in modern large language models, such as $\lambda(L) \asymp \ln L$ in Qwen [Bai et al., 2023] and $\lambda(L) \asymp (\ln L)^2$ in YaRN [Peng et al., 2024] for length generalization. Recently, several works have analyzed the scaling factor of NoPE theoretically. Under Gaussian assumptions on the attention logits, one obtains $\lambda(L) \asymp \sqrt{\ln L}$ [Anson et al., 2025]. A random-energy-model analysis can also characterize the associated phase transitions in this setting [Giorlandino and Goldt, 2026]. Under a non-random simplex assumption, one can analyze a phase transition at $\lambda(L) \asymp \ln L$ [Chen et al., 2026].
+As summarized in Table 1, many practical implementations are used in modern large language models, such as $\lambda(L) \asymp \ln L$ in Qwen [Bai et al., 2023][^bai2023qwen] and $\lambda(L) \asymp (\ln L)^2$ in YaRN [Peng et al., 2024][^peng2024yarn] for length generalization. Recently, several works have analyzed the scaling factor of NoPE theoretically. Under Gaussian assumptions on the attention logits, one obtains $\lambda(L) \asymp \sqrt{\ln L}$ [Anson et al., 2025][^anson2025scale]. A random-energy-model analysis can also characterize the associated phase transitions in this setting [Giorlandino and Goldt, 2026][^giorlandino2026two]. Under a non-random simplex assumption, one can analyze a phase transition at $\lambda(L) \asymp \ln L$ [Chen et al., 2026][^chen2026critical].
 
 However, these analyses typically posit a prescribed $\lambda(L)$ and study its consequences, rather than deriving the functional form. We therefore ask: *How should we design $\lambda = \lambda(L)$ to meet task requirements?*
 
 
 <div id="tab:related works"></div>
 
-**Table 1.** Attention scaling factors for different methods.
+<p class="caption"><strong>Table 1.</strong> Attention scaling factors for different methods.</p>
 
 | Method | Scaling Factor | Assumption on Logits |
 | --- | --- | --- |
-| Qwen: Bai et al. (2023) | $\lambda(L) \asymp \ln L$ |  |
-| YaRN: Peng et al. (2024) | $\lambda(L) \asymp (\ln L)^2$ |  |
-| Anson et al. (2025) | $\lambda(L) \asymp \sqrt{\ln L}$ | IID Gaussian |
-| Chen et al. (2026) | $\lambda(L) \asymp \ln L$ | Deterministic simplex |
-| Giorlandino and Goldt (2026) | $\lambda(L) \asymp \sqrt{\ln L}$ | Correlated Gaussian |
+| Qwen: Bai et al. (2023)[^bai2023qwen] | $\lambda(L) \asymp \ln L$ |  |
+| YaRN: Peng et al. (2024)[^peng2024yarn] | $\lambda(L) \asymp (\ln L)^2$ |  |
+| Anson et al. (2025)[^anson2025scale] | $\lambda(L) \asymp \sqrt{\ln L}$ | IID Gaussian |
+| Chen et al. (2026)[^chen2026critical] | $\lambda(L) \asymp \ln L$ | Deterministic simplex |
+| Giorlandino and Goldt (2026)[^giorlandino2026two] | $\lambda(L) \asymp \sqrt{\ln L}$ | Correlated Gaussian |
+
+
+
+[^su2021roformer]: Su, Jianlin and Ahmed, Murtadha and Lu, Yu and Pan, Shengfeng and Bo, Wen and Liu, Yunfeng. (2021). *RoFormer: Enhanced Transformer with Rotary Position Embedding*. https://arxiv.org/abs/2104.09864.
+
+[^bai2023qwen]: Bai, Jinze and Bai, Shuai and Chu, Yunfei and Cui, Zeyu and Dang, Kai and Deng, Xiaodong and Fan, Yang and Ge, Wenbin and Han, Yu and Huang, Fei and others. (2023). *Qwen technical report*. arXiv preprint arXiv:2309.16609.
+
+[^peng2024yarn]: Peng, Bowen and Quesnelle, Jeffrey and Fan, Honglu and Shippole, Enrico. (2024). *Yarn: Efficient context window extension of large language models*. International Conference on Learning Representations. 2024, 31932--31951.
+
+[^anson2025scale]: Anson, Ben and Wang, Xi and Aitchison, Laurence. (2025). *Scale-invariant attention*. Advances in Neural Information Processing Systems.
+
+[^giorlandino2026two]: Alessio Giorlandino and Sebastian Goldt. (2026). *Two failure modes of deep transformers and how to avoid them: a unified theory of signal propagation at initialisation*. The Fourteenth International Conference on Learning Representations.
+
+[^chen2026critical]: Shi Chen and Zhengjiang Lin and Yury Polyanskiy and Philippe Rigollet. (2026). *Critical attention scaling in long-context transformers*. The Fourteenth International Conference on Learning Representations.

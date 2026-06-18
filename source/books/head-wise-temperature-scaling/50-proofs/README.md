@@ -13,9 +13,25 @@
 }
 .proof {
   border-left: 3px solid #aaa;
-  padding: 0.5rem 1rem;
+  padding: 0.75rem 1rem;
   margin: 1rem 0;
   background: #fafafa;
+}
+.figure {
+  margin: 1rem 0;
+  text-align: center;
+}
+.figure img {
+  max-width: 100%;
+  height: auto;
+  display: inline-block;
+}
+.caption {
+  margin-top: -0.35rem;
+  margin-bottom: 1.25rem;
+  text-align: center;
+  color: #555;
+  font-size: 0.95rem;
 }
 .figure-grid {
   display: grid;
@@ -58,6 +74,7 @@ Z_{\beta, n} = \sum_{i=1}^{n} a_i^{\beta},
     \ 
     Z_{\beta, n+m} = \sum_{i=1}^{n+m} a_i^{\beta}.
 ```
+
 Thus $\alpha_i = \frac{a_i}{Z_{1, n+m}}$. The attention outputs for the signal, noise, and combined sequences are
 
 
@@ -68,6 +85,7 @@ Thus $\alpha_i = \frac{a_i}{Z_{1, n+m}}$. The attention outputs for the signal, 
     \ 
     \boldsymbol{o}_{n+m} = \sum_{i=1}^{n+m} \frac{a_i}{Z_{1, n+m}} \boldsymbol{v}_i.
 ```
+
 By Definition 3, the corresponding effective sequence lengths for $\beta \neq 1$ are
 
 
@@ -78,6 +96,7 @@ By Definition 3, the corresponding effective sequence lengths for $\beta \neq 1$
     \ 
     \mathcal{E}_{\beta, n+m} = \frac{Z_{1, n+m}^{\frac{\beta}{\beta - 1}}}{Z_{\beta, n+m}^{\frac{1}{\beta - 1}}}.
 ```
+
 Since $Z_{\beta, n+m} = Z_{\beta, n} + \tilde{Z}_{\beta, m}$ for all $\beta > 0$, we can decompose
 
 
@@ -88,6 +107,7 @@ Since $Z_{\beta, n+m} = Z_{\beta, n} + \tilde{Z}_{\beta, m}$ for all $\beta > 0$
         &= \frac{Z_{1, n}}{Z_{1, n} + \tilde{Z}_{1, m}} \sum_{i=1}^{n} \frac{a_i}{Z_{1, n}} \boldsymbol{v}_i + \frac{\tilde{Z}_{1, m}}{Z_{1, n} + \tilde{Z}_{1, m}} \sum_{j=1}^{m} \frac{a_{n+j}}{\tilde{Z}_{1, m}} \boldsymbol{v}_{n+j} \\
     \end{aligned}
 ```
+
 Let $\eta \coloneqq \frac{\tilde{Z}_{1, m}}{Z_{1, n} + \tilde{Z}_{1, m}} = 1 - \frac{Z_{1, n}}{Z_{1, n} + \tilde{Z}_{1, m}} \in (0, 1)$. Then
 
 
@@ -96,12 +116,14 @@ Let $\eta \coloneqq \frac{\tilde{Z}_{1, m}}{Z_{1, n} + \tilde{Z}_{1, m}} = 1 - \
     = \eta \left( \sum_{j=1}^{m} \frac{a_{n+j}}{\tilde{Z}_{1, m}} \boldsymbol{v}_{n+j} - \sum_{i=1}^{n} \frac{a_i}{Z_{1, n}} \boldsymbol{v}_i \right)
     = \eta (\tilde{\boldsymbol{o}}_m - \boldsymbol{o}_n).
 ```
+
 Therefore,
 
 
 ```math align=center
 \| \boldsymbol{o}_{n+m} - \boldsymbol{o}_n \| \le \eta \| \tilde{\boldsymbol{o}}_{m} - \boldsymbol{o}_n \|.
 ```
+
 Since $\tilde{\boldsymbol{o}}_{m}$ and $\boldsymbol{o}_n$ are convex combinations of the corresponding value vectors, we have
 
 
@@ -111,6 +133,7 @@ Since $\tilde{\boldsymbol{o}}_{m}$ and $\boldsymbol{o}_n$ are convex combination
     \le \max_{1 \le i \le n} \| \boldsymbol{v}_i \| + \max_{1 \le j \le m} \| \boldsymbol{v}_{n+j} \| 
     < \infty.
 ```
+
 Thus, it remains to bound $\eta$ in terms of $\Delta_{\beta}$. Moreover,
 
 
@@ -123,15 +146,18 @@ Thus, it remains to bound $\eta$ in terms of $\Delta_{\beta}$. Moreover,
         &= (1 - \eta)^{\beta} \mathcal{E}_{\beta, n}^{1 - \beta} + \eta^{\beta} \tilde{\mathcal{E}}_{\beta, m}^{1 - \beta},
     \end{aligned}
 ```
+
 Dividing by $\mathcal{E}_{\beta, n}^{1-\beta}$ gives
 
 
 <div id="eqn:retrieval identity"></div>
+
 ```math align=center
 (1 + \Delta_{\beta})^{1 - \beta} 
     = (1 - \eta)^{\beta} + \eta^{\beta} \left( \frac{\tilde{\mathcal{E}}_{\beta, m}}{\mathcal{E}_{\beta, n}} \right)^{1 - \beta}
     = (1 - \eta)^{\beta} + \kappa_{\beta} \eta^{\beta},
 ```
+
 where $\kappa_{\beta} \coloneqq \left( \tilde{\mathcal{E}}_{\beta, m} / \mathcal{E}_{\beta, n} \right)^{1 - \beta} > 0$ for $\beta \neq 1$, since the generalized ESS satisfies $\mathcal{E}_{\beta, \bullet} \ge 1$. Since $\Delta_{\beta} > 0$, Bernoulli's inequality yields
 
 
@@ -141,12 +167,14 @@ where $\kappa_{\beta} \coloneqq \left( \tilde{\mathcal{E}}_{\beta, m} / \mathcal
         (1 + \Delta_{\beta})^{1 - \beta} &\le 1 + (1 - \beta) \Delta_{\beta}, \  & \mathrm{ if } &   0 < \beta < 1.
     \end{aligned}
 ```
+
 For the right-hand side, since $\eta \in (0, 1)$, Taylor's theorem gives
 
 
 ```math align=center
 (1 - \eta)^{\beta} = 1 - \beta \eta + \frac{\beta (\beta - 1)}{2} (1 - \xi)^{\beta - 2} \eta^2,
 ```
+
 for some $\xi \in (0, \eta) \subset (0, 1)$. Thus, for the three ranges of $\beta$, we obtain
 
 
@@ -157,6 +185,7 @@ for some $\xi \in (0, \eta) \subset (0, 1)$. Thus, for the three ranges of $\bet
         (1 - \eta)^{\beta} &\ge 1 - \eta, \  & \mathrm{ if } &   0 < \beta < 1.
     \end{aligned}
 ```
+
 Substituting these bounds into Eq. (9) yields
 
 
@@ -167,6 +196,7 @@ Substituting these bounds into Eq. (9) yields
         \eta^{\beta} &\le \frac{1 - \beta}{\kappa_{\beta}} \Delta_{\beta} + \frac{1}{\kappa_{\beta}} \eta, \  & \mathrm{ if } &   0 < \beta < 1.
     \end{aligned}
 ```
+
 The following Lemma 1 unifies these three cases and provides the basis for the proof of Theorem 1.
 
 
@@ -176,8 +206,9 @@ The following Lemma 1 unifies these three cases and provides the basis for the p
 
 </div>
 
-<details class="proof" open>
-<summary><strong>Proof.</strong></summary>
+<div class="proof">
+
+**Proof.**
 
 Let $\Psi(x, t) = x - B x^{\gamma} - t A$, so $\partial_x \Psi(x, t) = 1 - \gamma B x^{\gamma - 1}$. Since $\Psi(0, 0) = 0$ and $\partial_x \Psi(0, 0) = 1 \neq 0$, the implicit function theorem yields a unique $C^1$ function $x(t)$ defined in a neighborhood of $0$ with $\Psi(x(t), t) = 0$ and $x(0) = 0$. Define
 
@@ -185,6 +216,7 @@ Let $\Psi(x, t) = x - B x^{\gamma} - t A$, so $\partial_x \Psi(x, t) = 1 - \gamm
 ```math align=center
 I = \left\{\tau \in [0, 1] : \forall t \in [0, \tau],   x(t) \mathrm{ exists, is continuous, and } x(t) \le 2 t A\right\}.
 ```
+
 Clearly $0 \in I$, so $I \neq \varnothing$. We show $I = [0, 1]$ by the continuity method.
 
 
@@ -194,6 +226,7 @@ Clearly $0 \in I$, so $I \neq \varnothing$. We show $I = [0, 1]$ by the continui
 ```math align=center
 x'(t) \left( 1 - \gamma B x(t)^{\gamma - 1} \right) = A.
 ```
+
 Since $x(t) \le 2 t A \le 2 A$ and by the hypothesis $0 < A < \left( \gamma B 2^{\gamma} \right)^{\frac{1}{1 - \gamma}}$ we have
 
 
@@ -205,6 +238,7 @@ Since $x(t) \le 2 t A \le 2 A$ and by the hypothesis $0 < A < \left( \gamma B 2^
         = \frac{1}{2} > 0,
     \end{aligned}
 ```
+
 hence $x'(t) > 0$. Thus $x(t)$ is strictly increasing on $[0, \tau]$.
 
 
@@ -218,6 +252,7 @@ hence $x'(t) > 0$. Thus $x(t)$ is strictly increasing on $[0, \tau]$.
         \ge 1 - \gamma B (2 A)^{\gamma - 1} > 0.
     \end{aligned}
 ```
+
 By the implicit function theorem the solution extends uniquely to $x(\tau^*) \coloneqq x^*$. Therefore the property holds at $\tau^*$, and $I$ is closed.
 
 
@@ -233,12 +268,13 @@ By the implicit function theorem the solution extends uniquely to $x(\tau^*) \co
         &< 2 t A,
     \end{aligned}
 ```
+
 where the second inequality uses $\gamma > 1$ and $t \in [0, 1]$, and the last inequality follows from $0 < A < \left( \gamma B 2^{\gamma} \right)^{\frac{1}{1 - \gamma}}$. By the continuity of $x(t)$, $t$ is an interior point of $I$, so $I$ is open.
 
 
 **4.** Since $I$ is nonempty, open and closed in the connected set $[0, 1]$, we have $I = [0, 1]$. In particular at $t = 1$ there is a solution $x(1)$ with $x(1)\le 2A$, completing the proof.
 
-</details>
+</div>
 <div class="theorem">
 
 **Restatement of Theorem 1.** The statement is given above.
@@ -246,18 +282,21 @@ where the second inequality uses $\gamma > 1$ and $t \in [0, 1]$, and the last i
 </div>
 
 
-<details class="proof" open>
-<summary><strong>Proof.</strong></summary>
+<div class="proof">
+
+**Proof.**
 
 Let $B \coloneqq \max_{1 \le i \le n+m} \| \boldsymbol{v}_i \| < \infty$. Then the change in the output is bounded by
 
 
 <div id="eqn:retrieval ub"></div>
+
 ```math align=center
 \| \boldsymbol{o}_{n+m} - \boldsymbol{o}_n \| 
     \le \eta \| \tilde{\boldsymbol{o}}_{m} - \boldsymbol{o}_n \|
     \le 2 B \eta.
 ```
+
 Consider four regimes depending on the range of $\beta$.
 
 
@@ -267,16 +306,19 @@ Consider four regimes depending on the range of $\beta$.
 ```math align=center
 \eta \le \frac{\beta - 1}{\beta} \Delta_{\beta} + \left( \frac{\beta - 1}{2} + \frac{\kappa_{\beta}}{\beta} \right) \eta^2
 ```
+
 gives
 
 
 <div id="eqn:retrieval ub beta>=2"></div>
+
 ```math align=center
 \eta \le \frac{2(\beta - 1)}{\beta} \Delta_{\beta}
     \  \mathrm{ if }
     \Delta_{\beta} 
     < \frac{\beta}{\beta - 1} \left( 8 \left( \frac{\beta - 1}{2} + \frac{\kappa_{\beta}}{\beta} \right) \right)^{-1}.
 ```
+
 Combined with Eq. (10), the change in the output satisfies
 
 
@@ -290,16 +332,19 @@ Combined with Eq. (10), the change in the output satisfies
 ```math align=center
 \eta \le (\beta - 1) \Delta_{\beta} + \kappa_{\beta} \eta^{\beta},
 ```
+
 we obtain
 
 
 <div id="eqn:retrieval ub 1<beta<2"></div>
+
 ```math align=center
 \eta \le 2 (\beta - 1) \Delta_{\beta}
     \  \mathrm{ if }
     \Delta_{\beta} 
     < \frac{1}{\beta - 1} \left( \kappa_{\beta} \beta 2^{\beta} \right)^{\frac{1}{1 - \beta}}.
 ```
+
 Combined with Eq. (10), this implies
 
 
@@ -313,16 +358,19 @@ Combined with Eq. (10), this implies
 ```math align=center
 \eta^{\beta} \le \frac{1 - \beta}{\kappa_{\beta}} \Delta_{\beta} + \frac{1}{\kappa_{\beta}} \left( \eta^{\beta} \right)^{\frac{1}{\beta}}
 ```
+
 yields
 
 
 <div id="eqn:retrieval ub 0<beta<1"></div>
+
 ```math align=center
 \eta \le (2 \Delta_{\beta})^{\frac{1}{\beta}}
     \  \mathrm{ if }
     \Delta_{\beta} 
     < \frac{\kappa_{\beta}}{1 - \beta} \left( \frac{2^{\frac{1}{\beta}}}{\kappa_{\beta} \beta} \right)^{\frac{\beta}{\beta - 1}}.
 ```
+
 Combining this with Eq. (10) gives
 
 
@@ -342,6 +390,7 @@ Combining this with Eq. (10) gives
     &H_{1, n+m} = -\sum_{i=1}^{n+m} \frac{a_i}{Z_{1, n+m}} \ln \frac{a_i}{Z_{1, n+m}}.
     \end{aligned}
 ```
+
 By direct decomposition,
 
 
@@ -354,24 +403,28 @@ By direct decomposition,
         &\ge (1 - \eta) H_{1, n} + \eta \tilde{H}_{1, m} - \eta \ln \eta,
     \end{aligned}
 ```
+
 where the last inequality uses $(1 - \eta) \ln (1 - \eta) \le 0$. Hence
 
 
 ```math align=center
 \ln(\mathcal{E}_{1, n+m}) \ge (1 - \eta) \ln(\mathcal{E}_{1, n}) + \eta \ln(\tilde{\mathcal{E}}_{1, m}) - \eta \ln \eta.
 ```
+
 Subtracting $\ln(\mathcal{E}_{1, n})$ gives
 
 
 ```math align=center
 \ln(1 + \Delta_1) \ge \eta \ln \left( \frac{\tilde{\mathcal{E}}_{1, m}}{\mathcal{E}_{1, n}} \cdot \frac{1}{\eta} \right).
 ```
+
 Let $\kappa_1 \coloneqq \tilde{\mathcal{E}}_{1, m} / \mathcal{E}_{1, n} > 0$. In analogy with the proof of Lemma 1, set $A \coloneqq \ln(1 + \Delta_1)$ and define $\Psi(x, t) = x \ln (\kappa_{\beta}/x) - t A$. By the implicit function theorem there exists a unique continuous solution $x(t)$ in a neighborhood of $0$ with $x(0) = 0$. Define
 
 
 ```math align=center
 I = \left\{\tau \in [0, 1] : \forall t \in [0, \tau],   x(t) \mathrm{ exists, is continuous, and } x(t) \le \frac{t A}{\ln (\kappa_1 / t A)}\right\}.
 ```
+
 Assume $A < \kappa_1 / e$. Then for any $t \in I \subseteq [0, 1]$,
 
 
@@ -384,6 +437,7 @@ Assume $A < \kappa_1 / e$. Then for any $t \in I \subseteq [0, 1]$,
         \ge 0,
     \end{aligned}
 ```
+
 and
 
 
@@ -396,16 +450,19 @@ and
         \le \frac{t A}{\ln (\kappa_1 / t A)}. 
     \end{aligned}
 ```
+
 The same connectivity argument as in Lemma 1 implies $I = [0, 1]$. Hence,
 
 
 <div id="eqn:retrieval ub beta=1"></div>
+
 ```math align=center
 \eta \le \frac{\ln(1 + \Delta_1)}{\ln (\kappa_1 / \ln(1 + \Delta_1))}
     \  \mathrm{ if }
     \Delta_{\beta} 
     < e^{\kappa_1 / e} - 1.
 ```
+
 Combined with Eq. (10), the change in the output is bounded by
 
 
@@ -423,9 +480,10 @@ Combined with Eq. (10), the change in the output is bounded by
         & n^{\frac{1}{\beta - 1}} \le \kappa_{\beta} \le n^{\frac{1}{\beta - 1}}, \  & \mathrm{ if } &   0 < \beta < 1.
     \end{aligned}
 ```
+
 The proof is completed by substituting these bounds into Eq. (11), Eq. (12), Eq. (13), Eq. (14).
 
-</details>
+</div>
 <div class="theorem">
 
 **Restatement of Corollary 1.** The statement is given above.
@@ -433,8 +491,9 @@ The proof is completed by substituting these bounds into Eq. (11), Eq. (12), Eq.
 </div>
 
 
-<details class="proof" open>
-<summary><strong>Proof.</strong></summary>
+<div class="proof">
+
+**Proof.**
 
 For $\beta > 1$, define
 
@@ -444,6 +503,7 @@ R_1 \coloneqq \frac{\tilde{Z}_{1, m}}{Z_{1, n}} = \frac{\sum_{j=1}^{m} e^{s_{n+j
     \ 
     R_{\beta} \coloneqq \frac{\tilde{Z}_{\beta, m}}{Z_{\beta, n}} = \frac{\sum_{j=1}^{m} e^{\beta s_{n+j}}}{\sum_{i=1}^{n} e^{\beta s_i}}.
 ```
+
 By $\tilde{\mathcal{E}}_{\beta, m} \ge \mathcal{E}_{\beta, n}$ and Definition 3, we have
 
 
@@ -453,6 +513,7 @@ By $\tilde{\mathcal{E}}_{\beta, m} \ge \mathcal{E}_{\beta, n}$ and Definition 3,
     = \left. \left( \frac{\sum_{j=1}^{m} e^{s_{n+j}}}{\sum_{i=1}^{n} e^{s_i}} \right)^{\beta} \right/ \left( \frac{\sum_{j=1}^{m} e^{\beta s_{n+j}}}{\sum_{i=1}^{n} e^{\beta s_i}} \right)
     = \frac{R_1^{\beta}}{R_{\beta}}.
 ```
+
 Thus,
 
 
@@ -466,9 +527,10 @@ Thus,
         > \frac{1 + R_1^{\beta}}{1 + R_1^{\beta}} = 1,
     \end{aligned}
 ```
+
 which implies $\Delta_{\beta} > 0$. The cases $0 < \beta < 1$ and $\beta = 1$ follow analogously.
 
-</details>
+</div>
 
 <div id="sec:proof of thm:ess aggregation"></div>
 ## Proof of Theorem 2
@@ -479,8 +541,9 @@ which implies $\Delta_{\beta} > 0$. The cases $0 < \beta < 1$ and $\beta = 1$ fo
 </div>
 
 
-<details class="proof" open>
-<summary><strong>Proof.</strong></summary>
+<div class="proof">
+
+**Proof.**
 
 Since $p$ is Riemann integrable and $\int_{0}^{1} p(x) \mathop{}\!\mathrm{d} x = 1$, the Riemann sums $R_n \coloneqq \frac{1}{n} \sum_{i=1}^{n} p(i / n)$ converge to $1$ as $n \to \infty$. Hence there exists $N \in \mathbb{N}$ such that for all $n > N$ we have $R_n \ge 1/2$, and therefore
 
@@ -488,19 +551,23 @@ Since $p$ is Riemann integrable and $\int_{0}^{1} p(x) \mathop{}\!\mathrm{d} x =
 ```math align=center
 R_n \ge \min\left\{R_1, \dots, R_N, 1/2\right\} \coloneqq K > 0.
 ```
+
 For every $n$ and $1 \le i \le n$,
 
 
 ```math align=center
 \frac{p(i / n)}{\sum_{j=1}^{n} p(j / n)} = \frac{p(i / n)}{n R_n} \le \frac{\sup_{x \in [0, 1]} p(x)}{n K}.
 ```
+
 Since a Riemann integrable function on $[0, 1]$ is bounded, set $C \coloneqq \sup_{x \in [0, 1]} p(x) / K > 0$. Then the delocalization condition
 
 
 <div id="eqn:aggregation delocalize"></div>
+
 ```math align=center
 \max_{1 \le i \le n} \pi_i \le \frac{C}{n}
 ```
+
 holds uniformly in $n$. Because $1 \le \mathcal{E}_{\beta}(\boldsymbol{\alpha}) \le n$, it suffices to prove $\mathcal{E}_{\beta}(\boldsymbol{\alpha}) = \Omega(n)$. We consider three cases depending on the value of $\beta$.
 
 
@@ -510,24 +577,28 @@ holds uniformly in $n$. Because $1 \le \mathcal{E}_{\beta}(\boldsymbol{\alpha}) 
 ```math align=center
 \frac{1}{\beta - 1} \ln \left( \sum_{i=1}^n \alpha_i^{\beta} \pi_i^{1-\beta} \right) \le \varepsilon,
 ```
+
 and since $\beta - 1 > 0$, exponentiating both sides gives
 
 
 ```math align=center
 \sum_{i=1}^n \alpha_i^{\beta} \pi_i^{1-\beta} \le e^{\varepsilon(\beta-1)}.
 ```
+
 By Eq. (15), $\pi_i^{1-\beta} \ge \left( C / n \right)^{1-\beta}$ for all $i \in \left\{1, \dots, n\right\}$. Substituting yields
 
 
 ```math align=center
 C^{1-\beta} n^{\beta-1} \sum_{i=1}^n \alpha_i^{\beta} \le \sum_{i=1}^n \alpha_i^{\beta} \pi_i^{1-\beta} \le e^{\varepsilon(\beta-1)}.
 ```
+
 Hence,
 
 
 ```math align=center
 \sum_{i=1}^n \alpha_i^{\beta} \le e^{\varepsilon(\beta-1)} C^{\beta-1} n^{1-\beta}.
 ```
+
 By the definition of $\mathcal{E}_{\beta}$,
 
 
@@ -544,18 +615,21 @@ By the definition of $\mathcal{E}_{\beta}$,
 ```math align=center
 \sum_{i=1}^n \alpha_i^{\beta} \pi_i^{1-\beta} \ge e^{\varepsilon(\beta-1)}.
 ```
+
 By Eq. (15), $\pi_i^{1 - \beta} \le \left( C / n \right)^{1 - \beta}$ for all $i \in \left\{1, \dots, n\right\}$. Substituting this bound gives
 
 
 ```math align=center
 C^{1-\beta} n^{\beta-1} \sum_{i=1}^n \alpha_i^{\beta} \ge \sum_{i=1}^n \alpha_i^{\beta} \pi_i^{1-\beta} \ge e^{\varepsilon(\beta-1)}.
 ```
+
 Thus,
 
 
 ```math align=center
 \sum_{i=1}^n \alpha_i^{\beta} \ge e^{\varepsilon(\beta-1)} C^{\beta-1} n^{1-\beta}.
 ```
+
 Raising both sides to the power $1 / (1-\beta)$ preserves the inequality, so
 
 
@@ -569,18 +643,21 @@ Raising both sides to the power $1 / (1-\beta)$ preserves the inequality, so
 ```math align=center
 D_{1}(\boldsymbol{\alpha} \parallel \boldsymbol{\pi}) = \sum_{i=1}^n \alpha_i \ln \frac{\alpha_i}{\pi_i} \le \varepsilon.
 ```
+
 With the Shannon entropy $H_1(\boldsymbol{\alpha}) = - \sum_i \alpha_i \ln \alpha_i$, expanding the KL divergence gives
 
 
 ```math align=center
 H_1(\boldsymbol{\alpha}) \ge -\sum_{i=1}^n \alpha_i \ln \pi_i - \varepsilon.
 ```
+
 By Eq. (15), $-\ln \pi_i \ge \ln n - \ln C$. Therefore,
 
 
 ```math align=center
 H_1(\boldsymbol{\alpha}) \ge \sum_{i=1}^n \alpha_i (\ln n - \ln C) - \varepsilon = \ln n - \ln C - \varepsilon.
 ```
+
 Exponentiating both sides yields
 
 
@@ -588,7 +665,7 @@ Exponentiating both sides yields
 \mathcal{E}_1(\boldsymbol{\alpha}) = \exp(H_1(\boldsymbol{\alpha})) \ge \exp(\ln n - \ln C - \varepsilon) = \frac{n}{C e^{\varepsilon}}.
 ```
 
-</details>
+</div>
 
 <div id="sec:proof of pro:clt logits"></div>
 ## Proof of Proposition 1
@@ -599,8 +676,9 @@ Exponentiating both sides yields
 </div>
 
 
-<details class="proof" open>
-<summary><strong>Proof.</strong></summary>
+<div class="proof">
+
+**Proof.**
 
 Given the rotation matrix $\boldsymbol{R}$, the attention logit between $\boldsymbol{q}$ and $\boldsymbol{k}_i$ for $i \in \left\{1, \dots, L\right\}$ is
 
@@ -613,6 +691,7 @@ Given the rotation matrix $\boldsymbol{R}$, the attention logit between $\boldsy
         = \frac{\rho}{d} \boldsymbol{q}^{\mathsf{T}} \boldsymbol{R}_{i-L} \boldsymbol{q} + \frac{\sigma}{\sqrt{d}} \boldsymbol{q}^{\mathsf{T}} \boldsymbol{R}_{i-L} \boldsymbol{z}_i.
     \end{aligned}
 ```
+
 Since $\boldsymbol{q} \sim \mathcal{N}(\boldsymbol{0}_d, \boldsymbol{I}_d)$, define
 
 
@@ -624,6 +703,7 @@ Since $\boldsymbol{q} \sim \mathcal{N}(\boldsymbol{0}_d, \boldsymbol{I}_d)$, def
         = \frac{2}{d} \sum_{f=0}^{d/2 - 1} \cos((i-L) \theta_f).
     \end{aligned}
 ```
+
 Since $\boldsymbol{R}$ is orthogonal,
 
 
@@ -632,7 +712,8 @@ Since $\boldsymbol{R}$ is orthogonal,
     \ 
     \| \boldsymbol{R} \| = \sqrt{\lambda_{\max}(\boldsymbol{R}^{\mathsf{T}} \boldsymbol{R})} = \sqrt{\lambda_{\max}(\boldsymbol{I}_d)} = 1.
 ```
-By the Hanson–Wright inequality (see, e.g., Section 6.2: Vershynin (2026)), there exists a constant $c > 0$ such that, for any $\varepsilon \in (0, 1)$,
+
+By the Hanson–Wright inequality (see, e.g., Section 6.2: Vershynin (2026)[^vershynin2026high]), there exists a constant $c > 0$ such that, for any $\varepsilon \in (0, 1)$,
 
 
 ```math align=center
@@ -640,6 +721,7 @@ By the Hanson–Wright inequality (see, e.g., Section 6.2: Vershynin (2026)), th
     \le 2 \exp\left( -c \min\left\{ \varepsilon^2 d, \varepsilon d \right\} \right)
     \le 2 \exp\left( -c \varepsilon^2 d \right).
 ```
+
 Therefore,
 
 
@@ -648,6 +730,7 @@ Therefore,
     \le \sum_{d=1}^{\infty} 2 \exp\left( -c \varepsilon^2 d \right)
     = 2 \sum_{d=1}^{\infty} \left( e^{-c \varepsilon^2} \right)^d < \infty.
 ```
+
 By the Borel–Cantelli lemma, as $d \to \infty$,
 
 
@@ -656,6 +739,7 @@ Y_d
     \overset{\mathrm{a.s.}}{\longrightarrow} \lim_{d \to \infty} \mathbb{E} Y_d 
     = \lim_{d \to \infty} \frac{2}{d} \sum_{f=0}^{d/2 - 1} \cos\left( (i-L) \theta_f \right).
 ```
+
 Let $\boldsymbol{b} = (b_1, \dots, b_L)^{\mathsf{T}}$, where $b_i \coloneqq \frac{\sigma}{\sqrt{d}} \boldsymbol{q}^{\mathsf{T}} \boldsymbol{R}_{i-L} \boldsymbol{z}_i$. Then
 
 
@@ -674,6 +758,7 @@ Let $\boldsymbol{b} = (b_1, \dots, b_L)^{\mathsf{T}}$, where $b_i \coloneqq \fra
         \coloneqq \frac{1}{\sqrt{d}} \sum_{j=1}^{d} \boldsymbol{c}_j.
     \end{aligned}
 ```
+
 Since $\tilde{\boldsymbol{z}}_i \coloneqq \boldsymbol{R}_{i-L} \boldsymbol{z}_i \mathrel{\overset{\mathrm{iid}}{\sim}} \mathcal{N}(\boldsymbol{0}, \boldsymbol{I}_d)$, the vectors $\boldsymbol{c}_j \in \mathbb{R}^{L}$ are i.i.d. and satisfy
 
 
@@ -682,18 +767,21 @@ Since $\tilde{\boldsymbol{z}}_i \coloneqq \boldsymbol{R}_{i-L} \boldsymbol{z}_i 
     \ 
     \mathrm{Cov}(\boldsymbol{c}_1) = \mathbb{E}\left( \sigma^2 q_1^2 \left( \tilde{z}_{i 1} \tilde{z}_{j 1} \right)_{i, j} \right) = \sigma^2 \boldsymbol{I}_L.
 ```
+
 By the multivariate central limit theorem,
 
 
 ```math align=center
 \boldsymbol{b} \overset{\mathcal{D}}{\longrightarrow} \mathcal{N}(\boldsymbol{0}_L, \sigma^2 \boldsymbol{I}_L) \  \mathrm{ as } d \to \infty.
 ```
+
 By Slutsky's theorem,
 
 
 ```math align=center
 (s_1, \dots, s_L) \overset{\mathcal{D}}{\longrightarrow} \mathcal{N}\left( (\mu_1, \dots, \mu_L), \sigma^2 \boldsymbol{I}_L \right) \  \mathrm{ as } d \to \infty,
 ```
+
 where
 
 
@@ -701,6 +789,7 @@ where
 \mu_i = \rho \lim_{d \to \infty} \frac{2}{d} \sum_{f=0}^{d/2 - 1} \cos\left( (i-L) \theta_f \right),
     \  \forall i \in \left\{1, \dots, L\right\}.
 ```
+
 For NoPE, $\boldsymbol{R} = \boldsymbol{I}_d$, so $\theta_f = 0$ for all $f \in \left\{0, \dots, d/2-1\right\}$. Hence
 
 
@@ -708,6 +797,7 @@ For NoPE, $\boldsymbol{R} = \boldsymbol{I}_d$, so $\theta_f = 0$ for all $f \in 
 \mu_i = \rho,
     \  \forall i \in \left\{1, \dots, L\right\}.
 ```
+
 For RoPE, $\theta_f = b^{-2f/d}$ for $f \in \left\{0, \dots, d/2-1\right\}$. Thus
 
 
@@ -717,7 +807,7 @@ For RoPE, $\theta_f = b^{-2f/d}$ for $f \in \left\{0, \dots, d/2-1\right\}$. Thu
     \  \forall i \in \left\{1, \dots, L\right\}.
 ```
 
-</details>
+</div>
 
 <div id="sec:proof of pro:lln ess"></div>
 ## Proof of Proposition 2
@@ -732,48 +822,59 @@ We first analyze the limiting behavior of the partition functions $Z(\boldsymbol
 ```math align=center
 \Lambda \coloneqq \limsup_{L \to \infty} \frac{\tau(L) \sigma}{\sqrt{\ln L}}.
 ```
+
 Let
 
 
 ```math align=center
 S_L(\tau) = \sum_{i=1}^{L} e^{\tau s_i}.
 ```
+
 Then:
 
 
 1. If $0 \le \Lambda < \sqrt{2}$, then
   
   
-  $$
-  \frac{S_L(\tau)}{\mathbb{E} S_L(\tau)} \overset{\mathbb{P}}{\longrightarrow} 1 \  \mathrm{ as } L \to \infty.
-  $$
+
+```math align=center
+\frac{S_L(\tau)}{\mathbb{E} S_L(\tau)} \overset{\mathbb{P}}{\longrightarrow} 1 \  \mathrm{ as } L \to \infty.
+```
+
 2. If $\Lambda = \sqrt{2}$ and
   
   
-  $$
-  \lim_{L \to \infty} \frac{\mathcal{E}_{2}(\mathring{\boldsymbol{\alpha}})}{L / \sqrt{\ln L}} \to \infty,
+
+```math align=center
+\lim_{L \to \infty} \frac{\mathcal{E}_{2}(\mathring{\boldsymbol{\alpha}})}{L / \sqrt{\ln L}} \to \infty,
               \  \mathrm{ where }  
               \mathcal{E}_{2}(\mathring{\boldsymbol{\alpha}}) \coloneqq \frac{\left( \sum_{i=1}^{L} e^{\tau \mu_i} \right)^2}{\sum_{i=1}^{L} e^{2 \tau \mu_i}},
-  $$
+```
+
   then
   
   
-  $$
-  \frac{S_L(\tau)}{\mathbb{E} S_L(\tau)} \overset{\mathbb{P}}{\longrightarrow} \frac{1}{2} \  \mathrm{ as } L \to \infty.
-  $$
+
+```math align=center
+\frac{S_L(\tau)}{\mathbb{E} S_L(\tau)} \overset{\mathbb{P}}{\longrightarrow} \frac{1}{2} \  \mathrm{ as } L \to \infty.
+```
+
 3. If $\sqrt{2} < \Lambda < \infty$, the law of large numbers fails: the normalized sum $S_L(\tau) / \mathbb{E} S_L(\tau)$ can converge to a nondegenerate, unbounded random variable on $[0, \infty)$.
 4. If $\Lambda = \infty$, then
   
   
-  $$
-  \frac{S_L(\tau)}{M_L(\tau)} \overset{\mathbb{P}}{\longrightarrow} 1   \mathrm{ as } L \to \infty,
-  $$
+
+```math align=center
+\frac{S_L(\tau)}{M_L(\tau)} \overset{\mathbb{P}}{\longrightarrow} 1   \mathrm{ as } L \to \infty,
+```
+
   where $M_L(\tau) \coloneqq \max_{1 \le i \le L} e^{\tau s_i}$.
 
 </div>
 
-<details class="proof" open>
-<summary><strong>Proof.</strong></summary>
+<div class="proof">
+
+**Proof.**
 
 For each $s_i \sim \mathcal{N}(\mu_i, \sigma^2)$, $e^{\tau s_i}$ is log-normal with expectation $\mathbb{E} e^{\tau s_i} = e^{\tau \mu_i + \frac{1}{2} \tau^2 \sigma^2}$.
 
@@ -784,7 +885,8 @@ For each $s_i \sim \mathcal{N}(\mu_i, \sigma^2)$, $e^{\tau s_i}$ is log-normal w
 ```math align=center
 \bar{S}_L(\tau) \coloneqq \frac{S_L(\tau)}{\mathbb{E} S_L(\tau)}.
 ```
-It suffices to show that for some $r > 1$, $\lim_{L \to \infty} \mathbb{E} |\bar{S}_L(\tau) - 1|^r = 0$, which implies $\bar{S}_L(\tau) \overset{\mathbb{P}}{\longrightarrow} 1$ as $L \to \infty$. By the von Bahr–Esseen inequality [Theorem 2: von Bahr and Esseen, 1965], for any $r \in [1, 2]$,
+
+It suffices to show that for some $r > 1$, $\lim_{L \to \infty} \mathbb{E} |\bar{S}_L(\tau) - 1|^r = 0$, which implies $\bar{S}_L(\tau) \overset{\mathbb{P}}{\longrightarrow} 1$ as $L \to \infty$. By the von Bahr–Esseen inequality [Theorem 2: von Bahr and Esseen, 1965][^von1965inequalities], for any $r \in [1, 2]$,
 
 
 ```math align=center
@@ -795,6 +897,7 @@ It suffices to show that for some $r > 1$, $\lim_{L \to \infty} \mathbb{E} |\bar
         = 2 \frac{\sum_{i=1}^{L} \mathbb{E} | e^{\tau s_i} - \mathbb{E} e^{\tau s_i} |^r}{ \left| \sum_{i=1}^{L} \mathbb{E} e^{\tau s_i} \right|^r }.
     \end{aligned}
 ```
+
 For the denominator, since $\mu_i \ge - \|\boldsymbol{\mu}\|_{\infty}$,
 
 
@@ -803,6 +906,7 @@ For the denominator, since $\mu_i \ge - \|\boldsymbol{\mu}\|_{\infty}$,
     = \sum_{i=1}^{L} e^{\tau \mu_i + \frac{1}{2} \tau^2 \sigma^2}
     \ge L e^{- \tau \|\boldsymbol{\mu}\|_{\infty} + \frac{1}{2} \tau^2 \sigma^2}.
 ```
+
 For the numerator, using the power mean inequality $(x + y)^r \le 2^{r-1} (x^r + y^r)$ for $r \ge 1$ and $x, y \ge 0$,
 
 
@@ -814,6 +918,7 @@ For the numerator, using the power mean inequality $(x + y)^r \le 2^{r-1} (x^r +
         &\le 2^{r-1} L ( e^{r \tau \|\boldsymbol{\mu}\|_{\infty} + \frac{1}{2} r^2 \tau^2 \sigma^2} + e^{r \tau \|\boldsymbol{\mu}\|_{\infty} + \frac{1}{2} r \tau^2 \sigma^2} ).
     \end{aligned}
 ```
+
 Hence,
 
 
@@ -825,6 +930,7 @@ Hence,
         &= 2^r \exp\left( -(r-1) \ln L + 2 r \tau \|\boldsymbol{\mu}\|_{\infty} + \frac{1}{2} r(r-1) \tau^2 \sigma^2 \right) (1 + o(1)).
     \end{aligned}
 ```
+
 Thus $\lim_{L \to \infty} \mathbb{E} |\bar{S}_L(\tau) - 1|^r = 0$ provided the exponent
 
 
@@ -834,6 +940,7 @@ Thus $\lim_{L \to \infty} \mathbb{E} |\bar{S}_L(\tau) - 1|^r = 0$ provided the e
     \to -\infty
     \  \mathrm{ as } L \to \infty.
 ```
+
 Since $\Lambda < \sqrt{2}$, there exists $\varepsilon > 0$ such that for sufficiently large $L$, $0 \le \tau^2 \sigma^2 / \ln L < 2 - \varepsilon$. Choose any $r \in (1, 2/(2-\varepsilon)) \subset (1, 2)$; then for large $L$ we have $\tau^2 \sigma^2 / \ln L < 2 / r$, so the exponent tends to $-\infty$. Hence some $r > 1$ satisfies $\lim_{L \to \infty} \mathbb{E}|\bar{S}_L(\tau) - 1|^r = 0$, which completes the proof.
 
 
@@ -846,7 +953,7 @@ S_L^{\le}(\tau) = \sum_{i=1}^{L} e^{\tau s_i} \mathbb{1}_{\left\{z_i \le \tau \s
     S_L^{>}(\tau) = \sum_{i=1}^{L} e^{\tau s_i} \mathbb{1}_{\left\{z_i > \tau \sigma\right\}}.
 ```
 
-**1. Bounding $S_L^{>}(\tau)$.** For any $x > 0$, the Mills' ratio gives $\Phi(-x) \le \phi(x) / x$, where $\Phi$ and $\phi$ denote the CDF and PDF of the standard normal distribution, respectively (see, e.g., Proposition 2.1.2: Vershynin (2026)). By the union bound,
+**1. Bounding $S_L^{>}(\tau)$.** For any $x > 0$, the Mills' ratio gives $\Phi(-x) \le \phi(x) / x$, where $\Phi$ and $\phi$ denote the CDF and PDF of the standard normal distribution, respectively (see, e.g., Proposition 2.1.2: Vershynin (2026)[^vershynin2026high]). By the union bound,
 
 
 ```math align=center
@@ -857,6 +964,7 @@ S_L^{\le}(\tau) = \sum_{i=1}^{L} e^{\tau s_i} \mathbb{1}_{\left\{z_i \le \tau \s
         \le L \cdot \frac{1}{\tau \sigma \sqrt{2 \pi}} e^{-\frac{1}{2} \tau^2 \sigma^2}.
     \end{aligned}
 ```
+
 Substituting $\tau \sigma = \sqrt{2 \ln L}$, the right-hand side equals $1 / (2 \sqrt{\pi \ln L}) \to 0$ as $L \to \infty$. It follows that
 
 
@@ -866,6 +974,7 @@ Substituting $\tau \sigma = \sqrt{2 \ln L}$, the right-hand side equals $1 / (2 
     = 1 - \mathbb{P}\left( \max_{1 \le i \le L} z_i > \tau \sigma \right) 
     \to 1 \  \mathrm{ as } L \to \infty.
 ```
+
 Therefore $S_L^{>}(\tau) \overset{\mathbb{P}}{\longrightarrow} 0$ as $L \to \infty$.
 
 
@@ -880,6 +989,7 @@ Therefore $S_L^{>}(\tau) \overset{\mathbb{P}}{\longrightarrow} 0$ as $L \to \inf
         = \frac{1}{2} e^{\frac{1}{2} \tau^2 \sigma^2}.
     \end{aligned}
 ```
+
 Hence
 
 
@@ -889,6 +999,7 @@ Hence
     = \frac{1}{2} \sum_{i=1}^{L} \mathbb{E} e^{\tau \sigma s_i}
     = \frac{1}{2} \mathbb{E} S_L(\tau).
 ```
+
 Moreover,
 
 
@@ -900,6 +1011,7 @@ Moreover,
         = e^{2 \tau^2 \sigma^2} \Phi(- \tau \sigma),
     \end{aligned}
 ```
+
 By Mills' ratio,
 
 
@@ -908,6 +1020,7 @@ By Mills' ratio,
     \le e^{2 \tau^2 \sigma^2} \frac{1}{\tau \sigma \sqrt{2 \pi}} e^{- \frac{\tau^2 \sigma^2}{2}} 
     = \frac{1}{\tau \sigma \sqrt{2 \pi}} e^{\frac{3}{2} \tau^2 \sigma^2}
 ```
+
 Therefore,
 
 
@@ -920,6 +1033,7 @@ Therefore,
         = \frac{2 L}{\sqrt{\pi \ln L}} \cdot \frac{1}{\mathcal{E}_2(\mathring{\boldsymbol{\alpha}})} \to 0 \  \mathrm{ as } L \to \infty,
     \end{aligned}
 ```
+
 where we used $\tau \sigma = \sqrt{2\ln L}$ in the last step and $\mathcal{E}_2(\mathring{\boldsymbol{\alpha}})$ denotes the effective sample size defined by $( \sum_{i=1}^{L} e^{\tau\mu_i} )^2 / ( \sum_{i=1}^{L} e^{2\tau\mu_i} )$. By Chebyshev's inequality, for any $\delta > 0$,
 
 
@@ -927,6 +1041,7 @@ where we used $\tau \sigma = \sqrt{2\ln L}$ in the last step and $\mathcal{E}_2(
 \mathbb{P}\left( \left| \frac{S_L^{\le}(\tau)}{\mathbb{E} S_L^{\le}(\tau)} - 1 \right| > \delta \right) 
     \le \frac{1}{\delta^2} \frac{\mathrm{Var}(S_L^{\le}(\tau))}{\mathbb{E} S_L^{\le}(\tau)^2} \to 0 \  \mathrm{ as } L \to \infty.
 ```
+
 Finally,
 
 
@@ -938,7 +1053,7 @@ Finally,
     \  \mathrm{ as } L \to \infty.
 ```
 
-**(iii)** Consider the case $\sqrt{2} < \Lambda < \infty$. In the simplest setting, where the $s_i$ are i.i.d. standard Gaussian (i.e., $\mu_i \equiv 0$ and $\sigma = 1$), $S_L(\tau)$ converges in distribution to a nondegenerate stable law on $[0, \infty)$ (see, e.g., Proposition 3.1: Molchanov and Panov (2019) and Theorem 3: Ben Arous et al. (2005)). Hence the law of large numbers fails.
+**(iii)** Consider the case $\sqrt{2} < \Lambda < \infty$. In the simplest setting, where the $s_i$ are i.i.d. standard Gaussian (i.e., $\mu_i \equiv 0$ and $\sigma = 1$), $S_L(\tau)$ converges in distribution to a nondegenerate stable law on $[0, \infty)$ (see, e.g., Proposition 3.1: Molchanov and Panov (2019)[^molchanov2019limit] and Theorem 3: Ben Arous et al. (2005)[^ben2005limit]). Hence the law of large numbers fails.
 
 
 **(iv)** If $\Lambda = \infty$, define $\zeta_L \coloneqq \frac{S_L(\tau) - M_L(\tau)}{M_L(\tau)}$; it suffices to show $\zeta_L \overset{\mathbb{P}}{\longrightarrow} 0$ as $L \to \infty$. Let $s_{(L)} \coloneqq \max_{1 \le i \le L} s_i$ denote the largest logit, so that $M_L(\tau) = \max_{1 \le i \le L} e^{\tau s_i} = e^{\tau s_{(L)}}$. Denote by $F_i(z)$ and $f_i(z)$ the CDF and PDF of $s_i$, respectively.
@@ -953,12 +1068,14 @@ Finally,
     = - \sum_{i=1}^{L} \ln \Phi\left(\frac{s_* - \mu_i}{\sigma}\right)
     \ge -L \ln \Phi\left(\frac{s_* + \|\boldsymbol{\mu}\|_{\infty}}{\sigma}\right).
 ```
+
 Hence
 
 
 ```math align=center
 - \frac{\gamma_L}{L} \le \ln \Phi\left(\frac{s_* + \|\boldsymbol{\mu}\|_{\infty}}{\sigma}\right) \le 0.
 ```
+
 Letting $L \to \infty$ implies $\Phi\left(\frac{s_* + \|\boldsymbol{\mu}\|_{\infty}}{\sigma}\right) \to 1$, and therefore $s_* \to \infty$. On the other hand,
 
 
@@ -967,6 +1084,7 @@ Letting $L \to \infty$ implies $\Phi\left(\frac{s_* + \|\boldsymbol{\mu}\|_{\inf
     = - \sum_{i=1}^{L} \ln \Phi\left(\frac{s_* - \mu_i}{\sigma}\right)
     \le -L \ln \Phi\left(\frac{s_* - \|\boldsymbol{\mu}\|_{\infty}}{\sigma}\right).
 ```
+
 If $\frac{s_* - \|\boldsymbol{\mu}\|_{\infty}}{\sigma} \ge 1$, then $\Phi\left(\frac{s_* - \|\boldsymbol{\mu}\|_{\infty}}{\sigma}\right) \ge \frac{1}{2}$. For $x \in \left[ \frac{1}{2}, 1 \right)$, we have $\ln x \ge 1 - \frac{1}{x} = -\frac{1-x}{x} \ge -2 (1 - x)$. Thus, by Mills' ratio,
 
 
@@ -978,12 +1096,14 @@ If $\frac{s_* - \|\boldsymbol{\mu}\|_{\infty}}{\sigma} \ge 1$, then $\Phi\left(\
         &\ge - \exp\left( -\frac{1}{2} \left(\frac{s_* - \|\boldsymbol{\mu}\|_{\infty}}{\sigma}\right)^2 \right).
     \end{aligned}
 ```
+
 Therefore, for $L \ge 3$,
 
 
 ```math align=center
 1 \le \gamma_L \le L \exp\left( -\frac{1}{2} \left(\frac{s_* - \|\boldsymbol{\mu}\|_{\infty}}{\sigma}\right)^2 \right),
 ```
+
 which implies $s_* \le \sigma \sqrt{2 \ln L} + \|\boldsymbol{\mu}\|_{\infty}$. To obtain an upper bound for $s_{(L)}$, set $s^* \coloneqq 2 \sigma \sqrt{\ln L} + \|\boldsymbol{\mu}\|_{\infty}$. By the union bound,
 
 
@@ -1000,10 +1120,12 @@ which implies $s_* \le \sigma \sqrt{2 \ln L} + \|\boldsymbol{\mu}\|_{\infty}$. T
         \to 0 \  \mathrm{ as } L \to \infty,
     \end{aligned}
 ```
+
 where the last inequality follows from $\Phi(-x) \le \frac{1}{2} e^{-x^2 / 2} < e^{-x^2 / 2}$ for $x > 0$. Combining the two bounds yields
 
 
 <div id="eqn:bound s(L)"></div>
+
 ```math align=center
 \mathbb{P}\left( s_{(L)} \notin [s_*, s^*] \right) 
     \le \mathbb{P}(s_{(L)} < s_*) + \mathbb{P}(s_{(L)} > s^*) 
@@ -1022,6 +1144,7 @@ where the last inequality follows from $\Phi(-x) \le \frac{1}{2} e^{-x^2 / 2} < 
         &= \exp\left( \frac{1}{2} \tau^2 \sigma^2 - \tau (z - \mu_i) \right) \frac{\Phi\left( \frac{z - \mu_i}{\sigma} - \tau \sigma \right)}{\Phi\left( \frac{z - \mu_i}{\sigma} \right)}.
     \end{aligned}
 ```
+
 Since $s^* = 2 \sigma \sqrt{\ln L} + \|\boldsymbol{\mu}\|_{\infty}$ and $\tau = \omega(\sqrt{\ln L})$, for sufficiently large $L$ we have $z \le s^* < -\|\boldsymbol{\mu}\|_{\infty} + \tau \sigma^2$, and hence $\frac{z - \mu_i}{\sigma} - \tau \sigma < 0$ for every $i \in \left\{1, \dots, L\right\}$. Applying Mills' ratio yields
 
 
@@ -1029,6 +1152,7 @@ Since $s^* = 2 \sigma \sqrt{\ln L} + \|\boldsymbol{\mu}\|_{\infty}$ and $\tau = 
 \Phi\left( \frac{z - \mu_i}{\sigma} - \tau \sigma \right)
     \le \frac{1}{\sqrt{2 \pi} \left( \tau \sigma - \frac{z - \mu_i}{\sigma} \right)} \exp\left( -\frac{1}{2} \tau^2 \sigma^2 + \tau (z - \mu_i) - \frac{(z - \mu_i)^2}{2 \sigma^2} \right).
 ```
+
 Therefore,
 
 
@@ -1038,6 +1162,7 @@ R_i(z)
     = \frac{\sigma^2 f_i(z)}{\left( \tau \sigma^2 - (z - \mu_i) \right) F_i(z)}
     \eqqcolon \tilde{R}_i(z).
 ```
+
 Since $z - \mu_i \ge s_* - \mu_i \ge s_* - \|\boldsymbol{\mu}\|_{\infty} > 0$,
 
 
@@ -1049,12 +1174,14 @@ Since $z - \mu_i \ge s_* - \mu_i \ge s_* - \|\boldsymbol{\mu}\|_{\infty} > 0$,
         &\le -\frac{s_* - \mu_i}{\sigma^2} + \frac{1}{\tau \sigma^2 - (s_* - \mu_i)}.
     \end{aligned}
 ```
+
 Since $s_* \le \sigma \sqrt{2 \ln L} + \|\boldsymbol{\mu}\|_{\infty}$ and $\tau = \omega(\sqrt{\ln L})$, for sufficiently large $L$ we have $\tau \sigma^2 \gg s^* - \mu_i > s_* - \mu_i$. Thus, $\tilde{R}_i'(z) < 0$, so the maximum of $\tilde{R}_i(z)$ is attained at $s_*$. Moreover, since $F_i(s_*) \ge \frac{1}{2}$ and $\tau \sigma^2 \ge 2 (s^* - \mu_i) \ge 2 (z - \mu_i)$, we have
 
 
 ```math align=center
 R_i(z) \le \tilde{R}_i(z) \le \tilde{R}_i(s_*) \le \frac{4}{\tau} f_i(s_*).
 ```
+
 For any $x \ge 1$, Mills' ratio gives $1 - \Phi(x) \ge \frac{x}{x^2 + 1} \phi(x) \ge \frac{1}{2 x} \phi(x)$, where $\phi$ is the standard normal density. Since $s_* \ge \|\boldsymbol{\mu}\|_{\infty}$, for sufficiently large $L$,
 
 
@@ -1064,15 +1191,18 @@ f_i(s_*)
     \le \frac{2}{\sigma} \left( \frac{s_* - \mu_i}{\sigma} \right) \left( 1 - \Phi\left( \frac{s_* - \mu_i}{\sigma} \right) \right)
     \le \frac{4 s_*}{\sigma^2} (1 - F_i(s_*)).
 ```
+
 Combining these inequalities yields
 
 
 <div id="eqn:bound Ri"></div>
+
 ```math align=center
 \sup_{z \in [s_*, s^*]} R_i(z) 
     \le \frac{16 s_*}{\tau \sigma^2} (1 - F_i(s_*)), 
     \  \forall i \in \left\{1, \dots, L\right\}.
 ```
+
 Summing Eq. (17) over $i \in \left\{1, \dots, L\right\}$, using the definition of $s_*$, and applying $\ln x \le x - 1$, we obtain, for any $z \in [s_*, s^*]$,
 
 
@@ -1082,6 +1212,7 @@ Summing Eq. (17) over $i \in \left\{1, \dots, L\right\}$, using the definition o
     \le - \frac{16 s_*}{\tau \sigma^2} \sum_{i=1}^{L} \ln F_i(s_*)
     = \frac{16 s_* \gamma_L}{\tau \sigma^2}.
 ```
+
 Using $s_* \le \sigma \sqrt{2 \ln L} + \|\boldsymbol{\mu}\|_{\infty}$ and $\gamma_L \le \left( \tau / \sqrt{\ln L} \right)^{1/2}$, we have
 
 
@@ -1096,9 +1227,11 @@ Using $s_* \le \sigma \sqrt{2 \ln L} + \|\boldsymbol{\mu}\|_{\infty}$ and $\gamm
 
 
 <div id="eqn:WL decompose"></div>
+
 ```math align=center
 \mathbb{P}\left( \zeta_L > \delta) \le \mathbb{P}(\zeta_L > \delta, s_{(L)} \in [s_*, s^*]) + \mathbb{P}(s_{(L)} \notin [s_*, s^*] \right).
 ```
+
 By the law of total probability,
 
 
@@ -1108,12 +1241,14 @@ By the law of total probability,
         &= \int_{s_*}^{s^*} \mathbb{P}\left( \zeta_L > \delta \;\middle|\; s_{(L)} = z \right) f_{(L)}(z) \mathop{}\!\mathrm{d} z,
     \end{aligned}
 ```
+
 where $f_{(L)}(z)$ is the PDF of $s_{(L)}$. By Markov's inequality,
 
 
 ```math align=center
 \mathbb{P}\left( \zeta_L > \delta \;\middle|\; s_{(L)} = z \right) \le \frac{1}{\delta} \mathbb{E}\left[ \zeta_L \;\middle|\; s_{(L)} = z \right].
 ```
+
 Since $s_1, \dots, s_L$ are independent continuous random variables, the events $\left\{s_j = z;   s_i < z, \forall i \neq j\right\}$ partition the event $\left\{s_{(L)} = z\right\}$. Thus,
 
 
@@ -1129,6 +1264,7 @@ Since $s_1, \dots, s_L$ are independent continuous random variables, the events 
         = \sum_{i = 1}^{L} R_i(z),
     \end{aligned}
 ```
+
 where $\pi_j(z) \coloneqq \mathbb{P}\left( s_j = z;   s_i < z, \forall i \neq j \;\middle|\; s_{(L)} = z \right)$ satisfies $\sum_{j=1}^{L} \pi_j(z) = 1$. Therefore,
 
 
@@ -1140,9 +1276,10 @@ where $\pi_j(z) \coloneqq \mathbb{P}\left( s_j = z;   s_i < z, \forall i \neq j 
         \to 0 \  \mathrm{ as } L \to \infty.
     \end{aligned}
 ```
+
 Combining this with Eq. (16) and substituting into Eq. (18) yields $\zeta_L \overset{\mathbb{P}}{\longrightarrow} 0$, which completes the proof.
 
-</details>
+</div>
 Using Lemma 2, we prove the law of large numbers in Proposition 2 for the three cases.
 
 <div class="theorem">
@@ -1152,8 +1289,9 @@ Using Lemma 2, we prove the law of large numbers in Proposition 2 for the three 
 </div>
 
 
-<details class="proof" open>
-<summary><strong>Proof.</strong></summary>
+<div class="proof">
+
+**Proof.**
 
 For any $\beta \neq 1$,
 
@@ -1172,6 +1310,7 @@ For any $\beta \neq 1$,
     \frac{Z(\boldsymbol{s}; \beta \lambda)}{\mathbb{E} Z(\boldsymbol{s}; \beta \lambda)} \overset{\mathbb{P}}{\longrightarrow} 1, 
     \  \mathrm{ as } L \to \infty.
 ```
+
 Since $g(x, y) = x^{\frac{\beta}{\beta - 1}} / y^{\frac{1}{\beta - 1}}$ is continuous at $(1, 1)$, the continuous mapping theorem gives
 
 
@@ -1190,6 +1329,7 @@ Since $g(x, y) = x^{\frac{\beta}{\beta - 1}} / y^{\frac{1}{\beta - 1}}$ is conti
     \overset{\mathbb{P}}{\longrightarrow} g\left( \frac{1}{2}, 1 \right) = 2^{\frac{\beta}{1 - \beta}}
     \  \mathrm{ as } L \to \infty.
 ```
+
 If $\Lambda < \sqrt{2}$ and $\beta \Lambda = \sqrt{2}$, so that $\beta > 1$, then
 
 
@@ -1198,6 +1338,7 @@ If $\Lambda < \sqrt{2}$ and $\beta \Lambda = \sqrt{2}$, so that $\beta > 1$, the
     \overset{\mathbb{P}}{\longrightarrow} g\left( 1, \frac{1}{2} \right) = 2^{\frac{1}{\beta - 1}}
     \  \mathrm{ as } L \to \infty.
 ```
+
 Combining these two cases, for $\beta \neq 1$,
 
 
@@ -1211,6 +1352,7 @@ Combining these two cases, for $\beta \neq 1$,
 ```math align=center
 \frac{\lambda^2(L_n) \sigma^2}{\ln L_n} > \frac{2}{\beta} + \varepsilon, \  \forall n \in \mathbb{N}.
 ```
+
 Since $\mathcal{E}_{\beta}(\mathring{\boldsymbol{\alpha}}) \le L$, we obtain
 
 
@@ -1221,6 +1363,7 @@ Since $\mathcal{E}_{\beta}(\mathring{\boldsymbol{\alpha}}) \le L$, we obtain
     = L_n^{-\frac{\beta}{2} \varepsilon} \to 0
     \  \mathrm{ as } n \to \infty.
 ```
+
 Therefore, $\liminf_{L \to \infty} \hat{\mathcal{E}}_{\beta}(L) = 0$. Moreover, if $\Lambda = \infty$, then by Lemma 2(iv),
 
 
@@ -1235,7 +1378,7 @@ Therefore, $\liminf_{L \to \infty} \hat{\mathcal{E}}_{\beta}(L) = 0$. Moreover, 
     \end{aligned}
 ```
 
-</details>
+</div>
 
 <div id="sec:proof of thm:scale nope"></div>
 ## Proof of Theorem 3
@@ -1246,8 +1389,9 @@ Therefore, $\liminf_{L \to \infty} \hat{\mathcal{E}}_{\beta}(L) = 0$. Moreover, 
 </div>
 
 
-<details class="proof" open>
-<summary><strong>Proof.</strong></summary>
+<div class="proof">
+
+**Proof.**
 
 By Proposition 1, as $d \to \infty$, the limiting distribution of $\boldsymbol{\alpha}$ is $\boldsymbol{g} \sim \mathcal{N}(\boldsymbol{\mu}, \sigma^2 \boldsymbol{I}_d)$. For NoPE, Eq. (2) gives $\boldsymbol{\mu} = \rho \boldsymbol{1}_d$, so $Z(\boldsymbol{\mu}; \lambda) = L e^{\rho}$ and $Z(\boldsymbol{\mu}; \beta \lambda) = L e^{\rho \beta}$. Therefore, by Eq. (4), Eq. (5),
 
@@ -1257,6 +1401,7 @@ By Proposition 1, as $d \to \infty$, the limiting distribution of $\boldsymbol{\
     \ 
     \hat{\mathcal{E}}_{\beta}(L) = e^{-\frac{\beta}{2} \lambda(L)^2 \sigma^2} L.
 ```
+
 By the continuous mapping theorem,
 
 
@@ -1264,6 +1409,7 @@ By the continuous mapping theorem,
 \frac{\mathcal{E}_{\beta}(\boldsymbol{\alpha})}{\mathcal{E}_{\beta}^*(L)} \overset{\mathcal{D}}{\longrightarrow} \frac{\mathcal{E}_{\beta}(\boldsymbol{g})}{\mathcal{E}_{\beta}^*(L)}
     \  \mathrm{ as } d \to \infty.
 ```
+
 By the Portmanteau theorem, for any $\varepsilon > 0$,
 
 
@@ -1271,6 +1417,7 @@ By the Portmanteau theorem, for any $\varepsilon > 0$,
 \limsup_{d \to \infty} \mathbb{P}\left( \left| \frac{\mathcal{E}_{\beta}(\boldsymbol{\alpha})}{\mathcal{E}_{\beta}^*(L)} - 1 \right| \ge \varepsilon \right)
     \le \mathbb{P}\left( \left| \frac{\mathcal{E}_{\beta}(\boldsymbol{g})}{\mathcal{E}_{\beta}^*(L)} - 1 \right| \ge \varepsilon \right).
 ```
+
 Then, by Proposition 2,
 
 
@@ -1279,6 +1426,7 @@ Then, by Proposition 2,
     \le \limsup_{L \to \infty} \mathbb{P}\left( \left| \frac{\mathcal{E}_{\beta}(\boldsymbol{g})}{\mathcal{E}_{\beta}^*(L)} - 1 \right| \ge \varepsilon \right)
     = 0.
 ```
+
 Hence,
 
 
@@ -1287,6 +1435,7 @@ Hence,
     \overset{\mathbb{P}}{\longrightarrow} 1
     \  \mathrm{ as } d \to \infty \mathrm{ then } L \to \infty,
 ```
+
 where the exact form of $\mathcal{E}_{\beta}^*(L)$ depends on the range of $\Lambda$.
 
 
@@ -1296,12 +1445,14 @@ where the exact form of $\mathcal{E}_{\beta}^*(L)$ depends on the range of $\Lam
 ```math align=center
 \mathcal{E}_{\beta}^*(L) = \hat{\mathcal{E}}_{\beta}(L) = e^{-\frac{\beta}{2} \lambda(L)^2 \sigma^2} L.
 ```
+
 Thus,
 
 
 ```math align=center
 \lambda(L) = \sqrt{\frac{2}{\beta \sigma^2} \ln \left( \frac{L}{\mathcal{E}_{\beta}^*(L)} \right)}.
 ```
+
 Hence, the condition is equivalent to
 
 
@@ -1311,6 +1462,7 @@ Hence, the condition is equivalent to
     = \sqrt{\frac{2}{\beta} \left( 1 - \liminf_{L \to \infty} \frac{\ln \mathcal{E}_{\beta}^*(L)}{\ln L} \right)}
     < \sqrt{2} \min\left\{1/\beta, 1\right\},
 ```
+
 which implies
 
 
@@ -1324,12 +1476,14 @@ which implies
 ```math align=center
 \mathcal{E}_{\beta}^*(L) = 2^{\frac{1}{\max\left\{\beta, \beta^{-1}\right\} - 1}} \hat{\mathcal{E}}_{\beta}(L) = e^{-\frac{\beta}{2} \lambda(L)^2 \sigma^2} 2^{\frac{1}{\max\left\{\beta, \beta^{-1}\right\} - 1}} L.
 ```
+
 Thus,
 
 
 ```math align=center
 \lambda(L) = \sqrt{\frac{2}{\beta \sigma^2} \ln \left( \frac{2^{\frac{1}{\max\left\{\beta, \beta^{-1}\right\} - 1}} L}{\mathcal{E}_{\beta}^*(L)} \right)}.
 ```
+
 Hence, the condition is equivalent to
 
 
@@ -1338,6 +1492,7 @@ Hence, the condition is equivalent to
     = \sqrt{\frac{2}{\beta} \left( 1 - \lim_{L \to \infty} \frac{\ln \mathcal{E}_{\beta}^*(L)}{\ln L} \right)}
     = \sqrt{2} \min\left\{1/\beta, 1\right\},
 ```
+
 which gives
 
 
@@ -1353,9 +1508,10 @@ which gives
     = \sigma \lim_{L \to \infty} \frac{\lambda(L)}{\sqrt{\ln L}}
     = \infty.
 ```
+
 Therefore, the condition is automatically satisfied.
 
-</details>
+</div>
 
 <div id="sec:proof of thm:scale rope"></div>
 ## Proof of Theorem 4
@@ -1366,8 +1522,9 @@ Therefore, the condition is automatically satisfied.
 </div>
 
 
-<details class="proof" open>
-<summary><strong>Proof.</strong></summary>
+<div class="proof">
+
+**Proof.**
 
 By Proposition 1, as $d \to \infty$, the limiting distribution of $\boldsymbol{\alpha}$ is $\boldsymbol{g} \sim \mathcal{N}(\boldsymbol{\mu}, \sigma^2 \boldsymbol{I}_d)$. For RoPE, Eq. (3) gives $\mu_i = \rho \int_{0}^{1} \cos\left( (i-L) b^{-x} \right) \mathop{}\!\mathrm{d} x$ for all $i \in \left\{1, \dots, L\right\}$. By the same argument as in the proof of Theorem 3, we have
 
@@ -1378,16 +1535,19 @@ By Proposition 1, as $d \to \infty$, the limiting distribution of $\boldsymbol{\
     \overset{\mathbb{P}}{\longrightarrow} 1
     \  \mathrm{ as } d \to \infty \mathrm{ then } L \to \infty.
 ```
+
 When $\Lambda = \infty$ (case (iii)), the proof is identical to that of Theorem 3(iii). It remains to consider $\Lambda \le \sqrt{2} \min\left\{1/\beta, 1\right\}$ (cases (i) and (ii)). As in the proofs of Theorem 3(i) and (ii), by Proposition 2, it suffices to show that for any $\beta \neq 1$,
 
 
 <div id="eqn:scale rope ess"></div>
+
 ```math align=center
 \mathcal{E}_{\beta}(\mathring{\boldsymbol{g}}) 
     = \frac{Z(\boldsymbol{\mu}; \lambda)^{\frac{\beta}{\beta - 1}}}{Z(\boldsymbol{\mu}; \beta \lambda)^{\frac{1}{\beta - 1}}} 
     = L + O\left( e^{\rho \max\left\{1, \beta\right\} \lambda} \right)
     \  \mathrm{ as } L \to \infty.
 ```
+
 Note that $\mathcal{E}_2(\mathring{\boldsymbol{g}}) = L + O(e^{2 \lambda}) = \omega(L / \sqrt{\ln L})$, which satisfies the condition required by Proposition 2(ii). Let $I_k \coloneqq \int_{0}^{1} \cos(k b^{-x}) \mathop{}\!\mathrm{d} x$. Then $\mu_i = \rho I_{i-L} = \rho I_{L-i}$. Moreover,
 
 
@@ -1397,12 +1557,14 @@ I_k
     \xlongequal{u = b^{-x}} \int_{0}^{1/b} \cos(k u) \frac{- \mathop{}\!\mathrm{d} u}{u \ln b}
     = \frac{1}{\ln b} \int_{1/b}^{1} \frac{\cos (k u)}{u} \mathop{}\!\mathrm{d} u.
 ```
+
 Define
 
 
 ```math align=center
 S_L(\tau) \coloneqq Z(\boldsymbol{\mu}; \tau / \rho) = \sum_{i=1}^{L} e^{(\tau / \rho) \mu_i} = \sum_{k=0}^{L-1} e^{\tau I_k},
 ```
+
 where $\tau \in \left\{\rho \lambda, \rho \beta \lambda\right\}$ corresponds to the inverse temperature. We prove Eq. (19) by showing that $S_L(\tau) = L + e^{\tau} + o(e^{\tau})$ as $L \to \infty$.
 
 
@@ -1412,6 +1574,7 @@ where $\tau \in \left\{\rho \lambda, \rho \beta \lambda\right\}$ corresponds to 
 ```math align=center
 \operatorname{Ci}(z) = - \int_{z}^{\infty} \frac{\cos t}{t} \mathop{}\!\mathrm{d} t.
 ```
+
 We first prove that, for any $z \in [1, \infty)$, $|\operatorname{Ci}(z)| \le 1 / z$. For any $t > 0$, we have $t^{-1} = \int_{0}^{\infty} e^{-ut} \mathop{}\!\mathrm{d} u$. Applying Fubini's theorem on truncated intervals and then taking the limit gives
 
 
@@ -1426,6 +1589,7 @@ We first prove that, for any $z \in [1, \infty)$, $|\operatorname{Ci}(z)| \le 1 
         &\overset{\mathrm{(b)}}{=} \int_{0}^{\infty} e^{-uz} \frac{\sin z - u \cos z}{1 + u^2} \mathop{}\!\mathrm{d} u.
     \end{aligned}
 ```
+
 Here, step (a) follows from Fubini's theorem on $[z, K] \times [0, \infty)$, and step (b) follows from the dominated convergence theorem since the integrand in the second term is bounded by the integrable function $e^{-uz}$. By the Cauchy–Schwarz inequality, $|\sin z - u \cos z| \le \sqrt{1 + u^2}$, and hence
 
 
@@ -1435,6 +1599,7 @@ Here, step (a) follows from Fubini's theorem on $[z, K] \times [0, \infty)$, and
     \le \int_{0}^{\infty} e^{-uz} \mathop{}\!\mathrm{d} u
     = \frac{1}{z}.
 ```
+
 Since $\operatorname{Ci}'(z) = \cos(z) / z$, the chain rule gives $\frac{\mathop{}\!\mathrm{d}}{\mathop{}\!\mathrm{d} z} \operatorname{Ci}(k z) = \cos(kz) / z$. Therefore,
 
 
@@ -1444,6 +1609,7 @@ I_k
     = \left. \frac{\operatorname{Ci}(ku)}{\ln b} \right|_{u = 1/b}^{1}
     = \frac{1}{\ln b} \left[ \operatorname{Ci}(k) - \operatorname{Ci}\left(\frac{k}{b}\right) \right].
 ```
+
 Since $k \ge b > 1$, applying $|\operatorname{Ci}(z)| \le 1 / z$ yields
 
 
@@ -1460,18 +1626,21 @@ Since $k \ge b > 1$, applying $|\operatorname{Ci}(z)| \le 1 / z$ yields
 ```math align=center
 S_L(\tau) = \sum_{k=0}^{L-1} 1 + \sum_{k=0}^{L-1} \left( e^{\tau I_k} - 1 \right) = L + (e^{\tau} - 1) + \sum_{k=1}^{L-1} \left( e^{\tau I_k} - 1 \right).
 ```
+
 We bound the remaining sum by splitting the index set at $k = \left\lfloor \tau \right\rfloor$. Recall that, for any $k \in \mathbb{N}$,
 
 
 ```math align=center
 I_k = \frac{1}{\ln b} \int_{1/b}^{1} \frac{\cos (k u)}{u} \mathop{}\!\mathrm{d} u.
 ```
+
 Thus $I_0 = 1$ and $|I_k| < 1$ for all $k \ge 1$. Since $I_k \to 0$ as $k \to \infty$, there exists
 
 
 ```math align=center
 c \coloneqq \max\left\{0,   \sup_{k \ge 1} I_k\right\} \in [0, 1)
 ```
+
 such that $I_k \le c$ for all $k \ge 1$. For $1 \le k \le \left\lfloor \tau \right\rfloor$, we have
 
 
@@ -1481,12 +1650,14 @@ such that $I_k \le c$ for all $k \ge 1$. For $1 \le k \le \left\lfloor \tau \rig
     \le \tau e^{\tau c} 
     = o(e^{\tau}) \  \mathrm{ as } L \to \infty.
 ```
+
 For $\left\lfloor \tau \right\rfloor + 1 \le k \le L - 1$, the bound on $I_k$ gives
 
 
 ```math align=center
 |\tau I_k| \le \frac{\tau(b+1)}{k \ln b} \le \frac{b+1}{\ln b}.
 ```
+
 Using $|e^x - 1| \le |x|e^{|x|}$ for all $x \in \mathbb{R}$, we obtain
 
 
@@ -1495,6 +1666,7 @@ Using $|e^x - 1| \le |x|e^{|x|}$ for all $x \in \mathbb{R}$, we obtain
     = O(|\tau I_k|) 
     = O\left( \frac{\tau}{k} \right) \  \mathrm{ as } L \to \infty.
 ```
+
 Therefore,
 
 
@@ -1505,6 +1677,7 @@ Therefore,
     \le O(\tau \ln L)
     = o(e^{\tau}) \  \mathrm{ as } L \to \infty.
 ```
+
 Combining these estimates yields $S_L(\tau) = L + e^{\tau} + o(e^{\tau})$ as $L \to \infty$.
 
 
@@ -1523,6 +1696,17 @@ Combining these estimates yields $S_L(\tau) = L + e^{\tau} + o(e^{\tau})$ as $L 
         &= L + O\left( e^{\rho \max\left\{1, \beta\right\} \lambda} \right) \  \mathrm{ as } L \to \infty,
     \end{aligned}
 ```
+
 which completes the proof.
 
-</details>
+</div>
+
+
+
+[^vershynin2026high]: Vershynin, Roman. (2026). *High-Dimensional Probability: An Introduction with Applications in Data Science*. Cambridge University Press.
+
+[^von1965inequalities]: von Bahr, Bengt and Esseen, Carl-Gustav. (1965). *Inequalities for the rth absolute moment of a sum of random variables, $1 \le r \le 2$*. The Annals of Mathematical Statistics. 36, (1), 299--303.
+
+[^molchanov2019limit]: Molchanov, Stanislav and Panov, Vladimir. (2019). *Limit theorems for the alloy-type random energy model*. Stochastics. 91, (5), 754--772.
+
+[^ben2005limit]: Ben Arous, Gerard and Bogachev, Leonid V. and Molchanov, Stanislav A.. (2005). *Limit theorems for sums of random exponentials*. Probability Theory and Related Fields. 132, (4), 579--612.
