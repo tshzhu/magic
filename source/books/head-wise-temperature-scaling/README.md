@@ -50,13 +50,13 @@ Course Project for Math in Modern AI — Spring 2026
 
 **Author.** Tansheng Zhu · 2025311617 · zts25@mails.tsinghua.edu.cn
 
-This folder is a GitSite book converted from the original LaTeX report. Sections are split into separate Markdown files, while subsections remain in the corresponding section file.
+This folder is a GitSite book converted from the original LaTeX report. Each section is a child directory with one `README.md`; subsections remain in the corresponding section file.
 
 ## Contents
 
-- [Preliminaries](10-preliminaries.md)
-- [Effective Sequence Length](20-effective-sequence-length.md)
-- [Head-Aware Temperature Scaling](30-head-aware-temperature-scaling.md)
-- [Conclusions](40-conclusions.md)
-- [Proofs](50-proofs.md)
-- [References](60-references.md)
+- [Preliminaries](10-preliminaries/)
+- [Effective Sequence Length](20-effective-sequence-length/)
+- [Head-Aware Temperature Scaling](30-head-aware-temperature-scaling/)
+- [Conclusions](40-conclusions/)
+- [Proofs](50-proofs/)
+- [References](60-references/)
