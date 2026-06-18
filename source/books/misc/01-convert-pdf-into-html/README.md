@@ -8,7 +8,7 @@
 1. cd to the directory where your PDF file is located
 2. run the command:
 ```bash
-    pdf-webslides -s your-file.pdf
+pdf-webslides -s your-file.pdf
 ```
 
 无法居中，右侧会有黑边，链接会丢失
